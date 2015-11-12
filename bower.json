@@ -1,0 +1,9 @@
+{
+  "name": "web-learning",
+  "version": "0.0.1",
+  "dependencies": {
+    "codehighlight.js": "*"
+  },
+  "appPath": "js",
+  "moduleName": "app"
+}
