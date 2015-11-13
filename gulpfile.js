@@ -17,6 +17,7 @@ var gulp = require('gulp')
 
 var tsPath = ['js/**/*.ts'],
 	lessPath = 'css/**/*.less',
+	lessSubPath = 'css-sub/**/*.less',
 	jadePath = 'html/**/*.jade';
 
 
@@ -95,6 +96,16 @@ gulp.task('css-minify', function () {
 		.pipe(gulp.dest('public'));
 });
 
+// ページ固有のless
+gulp.task('sub-less', function () {
+	gulp.src(lessSubPath)
+		.pipe(plum())
+		.pipe(less())
+		.pipe(autoprefixer())
+		.pipe(minifyCss())
+		.pipe(gulp.dest('public/subcss'));
+});
+
 //jadeをコンパイルして出力先にコピーする
 gulp.task('jade', function () {
 	gulp.src([jadePath])
@@ -107,6 +118,7 @@ gulp.task('jade', function () {
 gulp.task('watch', function () {
 	gulp.watch(lessPath, ['less']);
 	gulp.watch(jadePath, ['jade']);
+	gulp.watch(lessSubPath, ['sub-less']);
 });
 
 gulp.task('sonota', function () {
@@ -114,7 +126,7 @@ gulp.task('sonota', function () {
 });
 
 gulp.task('build', function () {
-	runSequence('clean', 'bower', 'less', 'jade', 'sonota');
+	runSequence('clean', 'bower', 'less', 'sub-less', 'jade', 'sonota');
 });
 
 // build & watch
