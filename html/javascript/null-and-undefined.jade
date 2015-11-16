@@ -9,47 +9,53 @@ block title
 block contents
 	h1 nullとundefined, NaN
 	section
-		span.
-			Javascriptの値である、nullとundefinedとNaNについて説明します。
+		div.
+			Javascriptの値である、nullとundefinedとNaNについて解説します。
+			「無効な値」としてよく出てきますが、それぞれ違うものなので混同しないように。
 
 	section
 		h1 nullとundefined
-		div まず、nullとundefinedの例です。
+		div.
+			まずはnullとundefinedの例。
+			比較的似た者同士。
 
-		script(title="falsyな値の一覧・補足", type="code/Javascript").
-			var a; // なにも代入していないのでundefined
-			var b = null; // nullを代入しているのでnull
+		script(title="unllとundefined", type="code/Javascript").
+			// 変数の定義
+			var a;
+			var b = null;
+			console.log(a); // 宣言しただけではなにも代入していないのでundefined
+			console.log(b); // 明示的にnullを代入しているのでnull
 
-			var o = {}; // 新しいオブジェクト。
-			o.a; // まだプロパティを定義していないのでundefined
-			o.a = "A"; // 代入したので"A"が返る
+			// 新しいオブジェクトを作成
+			var obj = {
+				A:"string A!",
+			};
+			console.log(obj.A); // -> "string A!"
+			console.log(obj.B); // まだプロパティを定義していないのでundefined
 
 		div.
-			最初に変数を宣言した場合、代入するまではundefinedになります。
 			undefinedは「未定義」の意味であり、varで変数を宣言したが代入されていないもの、またはオブジェクトの存在しないプロパティがundefinedとして判定されます。
+		p.
+			対してnullは明示的に代入されたものなので、誰かが意図してnullに設定したものです。
+			デバッグ時にundefinedが出てきたら、スペルミスの場合も多々あります。
 
 	section
 		h1 NaN (not a number)
 		div.
-			NaNとは、「not a number」の略です。その名のとおり、変数が「数字ではない」状態です。正確には「数字になりたかったのになれなかった数字」です。<br>
-		p.
-			Javascriptでは変数を宣言しても型を持っていないので、数字を入れていた変数に文字列やbooleanを代入しても問題ありません。<br>
-		div が、数字だと思い込んでいた変数に数字以外が代入されることがあります。その後の計算式で、暗黙の型変換で数字として扱えなかった場合にNaNが返されます。
+			NaNとは、「not a number」の略です。その名のとおり、変数が「数字ではない」状態。正確には「数字になりたかったのになれなかった数字」です。
+			計算式で、暗黙の型変換で数字として扱えなかった場合にNaNが返されます。
 
 		script(title="NaN", type="code/Javascript").
 			var a = 1; // Number:1
 			var b = "ABC"; // String:ABC
 
-			var c = a / 2; // Number:0.5
+			console.log(a / 2); // Number:0.5
 			console.log(a / b); // 1 ÷ "ABC"が計算できずにNaNになる
-
-			// おまけ:プラス演算子は数字にできない場合は文字列として扱う
-			console.log(a + b); // "ABC0.5"になる
 
 	section
 		h1 NaNの判定方法
 		div.
-			NaNは他の定数と違い、変数の比較時にちょっと不思議な挙動をします。
+			NaNの判定はちょっと特殊です。<code>===</code>による判定ができません！
 
 		script(title="NaNの比較", type="code/Javascript").
 			// NaN同士はイコールではない！
@@ -60,30 +66,30 @@ block contents
 			console.log(NaN != NaN); // true;
 			console.log(NaN !== NaN); // true;
 
-		div なんと、NaN同士を比較しても、イコールにならないのです。
+		div なんと、NaN同士はイコールになりません。
 		div そのかわり、<code>!==</code>でtrueと判定されます。なんてステキなあまのじゃく。
 
-		p イコール演算子の存在意義を否定するような動作ですが、この同一オブジェクトにも関わらずfalseと判定されるのはNaNだけです。
+		p イコール演算子の存在意義を否定するような動作ですが、同一オブジェクトにも関わらず"イコールではない"と判定されるのはNaNだけです。
 		p.
-			他に、NaNの判定には<code>Number.isNaN</code>関数が使えます。
-			Javascriptにはビルトイン関数に<code>isNaN</code>という紛らわしい関数がありますが、こちらはNaNのみではなく数字に変換できないものは全てtrueを返します。
+			もうひとつ、NaNの判定には<code>Number.isNaN</code>関数が使えます。
+			Javascriptには<code>isNaN</code>という紛らわしいグローバル関数(!)がありますが、こちらはNaNのみではなく数字に変換できないものは全てtrueを返します。NaNのみを判定したい場合に使えません。
 
 		script(title="NaNの判定", type="code/Javascript").
 			//NumberにはNaNを判定する関数がある
 			Number.isNaN(NaN); // true
 			Number.isNaN("日本語"); // 数字にできないがNaNではないのでfalse
 
-			// ビルトイン関数のisNaNは数字に変換できない場合にtrueを返す
+			// グローバル関数のisNaNは数字に変換できない場合にtrueを返す
 			isNaN(NaN); // NaNでtrueが返るが・・・
 			isNaN('ABC'); // ただの文字列も数字に変換できないのでtrueを返す
 			isNaN(true); // false。暗黙の変換で1になるので数値扱い
 
 	section
 		h1 どちらを採用すべきか？
-		div さて、NaNの判定には２種類が使えることがわかりました。どちらを使うべきでしょうか？
+		div さて、NaNの判定には<code>Number.isNaN()</code>と<code>!==</code>の２種類が使えることがわかりました。どちらを使うべきでしょうか？
 
-		p <code>Number.isNaN()</code>は冗長ですが、Javascriptを知らなくてもなんとなく意味はわかります。
-		p <code>!==</code>の方が、圧倒的にタイピング量が少なくエコですが、NaNを理解していないメンバーをいたずらに混乱させてしまうかもしれません。気の利いた子が「リファクタリング！」と言いながら意味のないコードと誤解して削除してしまうこともあるでしょう(または<code>===</code>に変えてしまうか)。
+		p <code>Number.isNaN()</code>はタイプ数が多いので面倒ですが、Javascriptを知らなくてもなんとなく意味はわかります。
+		p <code>!==</code>の方が、圧倒的にタイピング量が少なくエコです。しかしNaNを理解していないメンバーを混乱させてしまうかもしれません。
 
 	section
 		h1 NaN判定方式のパフォーマンス測定
@@ -105,24 +111,31 @@ block contents
 				console.timeEnd('isNaN');// isNaN: 446.753ms
 			}();
 
-		div 手元のマシン・chromeでの計測は、100万回の繰り返しで最大30msくらいの差がありました。若干、<code>!==</code>の方が速いです。
-		div でも100万回でたったこれだけの差なので、処理パフォーマンスについては深く考えなくても良さそうです。
+		div 手元のchromeでの計測は、100万回の繰り返しで最大30msくらいの差がありました。若干、<code>!==</code>の方が速いです。
+		div でも100万回でたったこれだけの差なので、処理パフォーマンスについては考慮しなくても良さそうです。
 
 		p.
-			結論としては、<code>Number.isNaN()</code>をおすすめします。
-			誰が触るかわからない大規模プロジェクトなら迷わずこっち(でもきっとビルトインisNaNを使っちゃう困った人が出てくる予感)。
+			結論としては、どっちでもいいかなーと思います。
+			NaNそのものを判定するケースは少なく、「数字であるか？」の様なパラメータチェック的な用途が多いと思います。
+			それをプロジェクトのフレームワークとして提供するのがいいでしょう。
+			共通化しておけば、もし判定ロジックにバグがあっても修正は一箇所で済みます。
+
+		p
+			+infolink('Javascript: 数値判定(isNumeric)関数の作成', 'framework/function-isNumeric')
 
 	section
 		h1 まとめ
 		div
 			| NaNで予想外に盛り上がってしまいましたが、この節を簡単にまとめると
 			ul
-				li nullは変数がnullで代入されている
 				li undefinedは変数がまだ初期化されていない、またはプロパティがない
+				li nullは代入済み
 				li NaNは数字になれなかったヤツ
-				li NaNを判定するには<code>Number.isNaN()</code>を使う
+				li NaNを判定するには<code>Number.isNaN()</code>か<code>value !== value</code>を使う
 			| となります。
-
+		p.
+			<code>value !== value</code>なので間違えないように。<br>
+			<code>value !== NaN</code>だと全てがfalseになるので使えないよ。
 
 // ライター情報
 block writer
