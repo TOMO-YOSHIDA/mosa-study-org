@@ -29,6 +29,9 @@ block contents
 			console.log(a || b || c || d); // -> "ABC"
 			console.log(a || b || c || null); // -> null
 
+			// dが二番目にtrueと評価され、それ以降は無視
+			console.log(a || d || b || c); // -> "ABC"
+
 		div どういうこと？
 		div 「||」は、左から順番に変数を判定していきます。
 		div 変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。
