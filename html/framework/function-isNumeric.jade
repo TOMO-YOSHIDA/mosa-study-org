@@ -1,0 +1,132 @@
+// 記事テンプレート
+extends ../template
+
+// 記事のタイトルをココに
+block title
+	title Javascript: isNumeric(数値判定)関数の作成
+
+// 記事本文
+block contents
+	h1 数値判定関数の作成
+	section
+		h1 数値判定関数
+
+		p.
+			渡された値が「数字であるか？」のチェックを提供する関数を作成してみます。
+
+		script(title="数字探偵関数", type="code/Javascript").
+			// valueが数値か？のチェック。数字ならtrue, それ以外はfalse
+			var isNumeric = function (value) {
+				// グローバル関数のisNaNを使う。undefined, NaN, 数字ではない文字列がはじかれる
+				if(isNaN(value)) return false;
+
+				// nullをはじく
+				if(value === null) return false;
+
+				// true, falseもはじこう
+				if(value === true || value === false) return false;
+
+				// 空文字もはじく('=='ではfalseをはじけるがゼロもはじいてしまうので'==='を使う)
+				if(value === '') return false;
+
+				// Infinity(無限大)を数字とみなすか？ -> コメントアウト
+				// if(value === Infinity) return false;
+
+				// ここまでくぐり抜けてきたら数字だろう
+				return true;
+			}
+
+			// 数字ならtrueが返る
+			console.log(isNumeric('123'));
+			console.log(isNumeric(-2));
+			console.log(isNumeric(Infinity));
+
+			// ここからはチェックエラーのためfalseが返る
+			console.log(isNumeric(null));
+			console.log(isNumeric(undefined));
+			console.log(isNumeric(''));
+			console.log(isNumeric('ABC'));
+
+		div これで数字判定ができるようになりました。
+		p.
+			広く使われているjQueryでは<code>$.isNumeric</code>関数を提供しています。
+			この関数ではInfinityも数字ではないとして扱います。
+			16行目のコメントアウトを外せば同様の動作となります。
+
+		p.
+			しかし数字判定一つでずいぶん長ったらしいコードになりました。
+			ショートハンドで書きなおしてみましょう。
+
+		script(title="数字探偵関数(short)", type="code/Javascript").
+			var isNumeric = function (v) {
+				return !(isNaN(v) || v === null || v === true || v === false || v === '');
+			}
+
+		div これで見た目はだいぶすっきりしました。
+
+	section
+		h1 性能検証
+		div.
+			さて、せっかくコードを縮めたので、性能検証してみましょう。
+			ショートハンド化していない方をisNumeric1, した方をisNumeric2として検証します。
+			果たして速くなっているのか？
+
+		script(title="数字探偵関数(short)", type="code/Javascript").
+			+function(){
+				// ループ回数：100万回
+				var loops = 1000 * 1000;
+
+				// 検証に使う数字たち(jQuery.isNumericより)
+				var values = [
+					"-10",     // true
+					16,        // true
+					0xFF,      // true
+					"0xFF",    // true
+					"8e5",     // true (exponential notation string)
+					3.1415,    // true
+					+10,       // true
+					0144,      // true (octal integer literal)
+					"",        // false
+					{},        // false (empty object)
+					NaN,       // false
+					null,      // false
+					true ,     // false
+					Infinity,  // false
+					undefined  // false
+				];
+
+				console.time('long版');
+				for(var i = loops; i--;) {
+					values.forEach(isNumeric1)
+				}
+				console.timeEnd('long版')
+
+				console.time('short版');
+				for(var i = loops; i--;) {
+					values.forEach(isNumeric2)
+				}
+				console.timeEnd('short版')
+			}();
+
+	section
+		h1 実行結果
+		div long版: 4598.851ms
+		div short版: 4788.360ms
+		div という残念な結果になってしまいました。
+
+		p 何度か計測してみましたが、だいたい同じ結果です。
+
+		p.
+			なぜshort版が遅いのかというと、<code>!</code>演算子による「true/falseを判定して結果を反転する」分、処理が多くなっているから。
+			それでも150万回の判定を行って約200ms、4%の性能差。
+			4%は意外と響いてくる数字なので、ちょっとくらいコードが長くても速い方を選んだほうが良さそうです。
+
+		p 正直、ここまで差があるとは思わなかった。
+
+	section
+		+infolink('nullとundefined, NaN', '../javascript/null-and-undefined')
+		+exlink('jQuery.isNumeric', 'https://api.jquery.com/jQuery.isNumeric/')
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
