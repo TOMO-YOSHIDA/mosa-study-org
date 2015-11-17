@@ -1,0 +1,26 @@
+doctype html
+
+include mixin
+html
+	head
+		block title
+		link(rel="stylesheet" href="/study.css")
+	body
+		article
+			block contents
+
+			div.space
+			footer
+				hr
+				div.writer
+					div.title ライター情報
+					div.person
+						block writer
+				div.space
+				div.flex-center
+					a.btn(href="/") HOME
+				div.space
+
+		script(src="/js/_lib.min.js")
+		script.
+			CodeHighlight.execute();
