@@ -1,0 +1,160 @@
+// 記事テンプレート
+extends ../template
+
+// 記事のタイトルをココに
+block title
+	title Javascript: 値の比較"=="と"==="
+
+//- 表作成関数
+mixin makeTable(compare, data, caption)
+	-	var toStr = function(v){return (typeof v === "string") ? '"' + v + '"': String(v);}
+	table
+		caption= caption
+		tr
+			th &nbsp;
+			each valX in data
+				th= toStr(valX)
+
+		each valY in data
+			tr
+				th= toStr(valY)
+				each valX in data
+					case compare(valX, valY)
+						when true
+							td.true true
+						default
+							td.false false
+
+
+// 記事本文
+block contents
+
+	h1 値の比較"=="と"==="
+	section
+		h1 二重イコール演算子と三重イコール演算子
+		div "=="は二重イコール演算子、"==="三重イコール演算子といいます。
+		div.
+			もちろん同じではなく、Javascriptでは重要な役割をします。
+			順番に見ていきましょう。
+
+	section
+		h1 二重イコール演算子(==)
+		div.
+			二重イコール演算子は、Javascript以外の言語でも見たことがあると思います。
+			Javascriptにおいて、"=="は、「ざっくり同じ値か比較する」という意味になります。
+			ざっくりなので、似ているモノ同士はtrueと判定します。
+			初心者本にはこの記法で書かれているものが多く、そのまま業務に突入する人もけっこういます。
+		p.
+			この「似ているとみなす」のは言語仕様できっちり決まっているので、ここではっきりさせておきます。
+			まずは下記の例を見てください。
+
+		script(title="二重イコール演算子による比較",type="code/javascript").
+			console.log( "" == false ); // true
+			console.log( 0 == false ); // true
+			console.log( 0 == "" ); // true
+			console.log( null == 0 ); // false
+
+			console.log( 1 == "1" ); // true
+			console.log( 1 == true ); // true
+			console.log( null == undefined ); // true
+		div 空文字とfalse、ゼロはそれぞれ同じである、と判定されてしまいました。
+		p 数字1と文字列"1"は、同じでも良い気がしますが、数字1とbooleanのtrueが同じになっています。これは良くないですね。
+
+	section
+		h1 二重イコール演算子の比較結果
+
+		div.
+			ではどんなときに「同じ」と判定されるのか、一覧にしてみました。
+			縦軸と横軸を比較した時の判定結果が下記の表です。
+
+		- var caption = 'falsyな値を二重イコール演算子で比較';
+		- var data = ['', 0, false, null, undefined, NaN];
+		- var compare = function(a,b){return a == b};
+		+makeTable(compare, data, caption)
+
+		div.
+			一部、型が違っても同値として判定されているのがわかるでしょうか？
+			文字列、数字、booleanのfalsyな値はすべて「同じ」として判定されます。
+		div.
+			nullとundefinedはひとくくりに同じとされます。booeanや0、空文字列とは同じではありません。
+		div
+			| NaNについては、NaN同士でもイコールになりません。
+			+pagelink('前節で解説', './null-and-undefined')
+			| していますので、そちらを参照してください。
+
+		div.space
+		p 次はtruthyな値を比較してみます。
+		- var caption = 'truthyな値を二重イコール演算子で比較';
+		- var data = ['1', 1, true, '3', 3, '-1', -1];
+		- var compare = function(a,b){return a == b};
+		+makeTable(compare, data, caption)
+
+		div.
+			1, "1", trueはそれぞれ「同じである」と判定されます。
+			0,1以外の値はboolean値と同じであると判定されることはありません。
+
+		p.
+			二重イコール演算子では数字と文字列を比較する場合は、そこそこ期待通りの動きをします。
+			ただ、空文字と0が同じと判定されるのを許容するので、未入力とゼロの場合わけを考えておかないと、あとで痛い目をみます。
+
+	section
+		h1 三重イコール演算子(===)
+		div.
+			次は三重イコール演算子です。三重イコール演算子は、両者を厳密に比較します。
+			1と"1"の様に、似ているものであっても容赦なく違う！と判定します。
+
+		script(title="三重イコール演算子による比較",type="code/javascript").
+			console.log( "" === false ); // false
+			console.log( 0 === false ); // false
+			console.log( 0 === "" ); // false
+			console.log( null === 0 ); // false
+
+			console.log( 1 === "1" ); // false
+			console.log( 1 === true ); // false
+			console.log( null === undefined ); // false
+
+		div.
+			今度は全てが「同じではない」と判定されました。
+		p 三重演算子の比較結果を表にすると、下記のようになります。
+
+	section
+		- var caption = 'falsyな値を三重イコール演算子で比較';
+		- var data = ['', 0, false, null, undefined, NaN];
+		- var compare = function(a,b){return a === b};
+		+makeTable(compare, data, caption)
+
+	section
+		- var caption = 'truthyな値を三重イコール演算子で比較';
+		- var data = ['1', 1, true, '3', 3, '-1', -1];
+		- var compare = function(a,b){return a === b};
+		+makeTable(compare, data, caption)
+
+		div.
+			booleanとNumber、Stringなどの型はもちろん、nullとundefinedもきっちり判定されます。
+			でもNaN同士はやっぱりイコールになりません。
+		div
+			| NaNについては
+			+pagelink('nullとundefind, NaN', './null-and-undefined')
+			| をどうぞ。
+
+
+	section
+		h1 "=="と"==="の使い分け
+		div "=="と"==="は使い分けるべきなのか、"==="のみを採用すべきなのか？
+		div.
+			"=="は昔からよくバグの原因になってきました。理想を言えば"==="のみにすると固いプログラムができます。
+			とはいえ、二重イコール演算子にはnullとunefinedをいっぺんに判定してくれる便利さもあります。
+			nullかundefindの判定だったら<code>value == null</code>の二重イコール演算子で十分でしょう。
+
+		p 両方の特性を考えて、正しい選択ができるようになってください。
+
+	section
+		h1 まとめ
+		ul
+			li "=="の判定はざっくり -> falsyな値の比較に気をつける
+			li "==="は厳密に比較
+			li NaNだけ特殊なので覚えておく
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
