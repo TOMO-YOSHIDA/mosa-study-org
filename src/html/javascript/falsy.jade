@@ -1,0 +1,129 @@
+include ../mixin
+extends ../template
+// 記事のタイトルをココに
+block title
+	title Javascript: falsyな値
+
+// 記事本文
+block contents
+	h1 falsyな値
+	section
+		span.
+			Javascriptではfalsyな値というのがとても重要です。
+			「falsyな値」とは、if文や三項演算子の条件としてfalseと判定される値のことです。
+			この後のショートハンドテクニックなどでも頻繁に出てきます。
+
+		h1 変数を使ってtrue/falseの判定をする
+		div.
+			下記の例を見てみましょう。
+			変数に文字列を入れていますが、そのままif文の判定条件になっています。
+
+		script(title="falsyな値の例", type="code/Javascript").
+			var a  = 'abc';
+			if(a) { // <- この行に注目!!
+				console.log('aがtrueとして判定された');
+			}
+			// -> aがtrueとして判定された
+
+		div このように、if文の中に直接変数を入れることでtrue/falseの判定ができます。
+
+
+	section
+		h1 ６つのfalsyな値とは
+		div ではなにがtrueで、なにがfalseとして判定されるのか？
+
+		p Javascriptでは、下記6つの値がfalseと判断され、それ以外はtrueです。
+
+		ul
+			li 0: 数字のゼロ
+			li "": 長さゼロの文字列
+			li false: booleanのfalse
+			li null: null(明示的なnull)
+			li undefined: 未定義(または何も代入されていない状態)
+			li NaN: 数字ではない
+
+		div.
+			つまり、6つのfalsyを覚えるだけで良いことになります。
+			ここだけ忘れないように。
+
+		script(title="falsyな値のチェック", type="code/Javascript").
+			// 配列の中には全7種類のfalsyな値が格納されている
+			var falsy = [0, "", false, null, undefined, NaN, document.all];
+
+			// 全部の値がfalseと判定される
+			falsy.forEach(function(v){
+				if(!v) console.log(v + " is falsy!");
+			});
+
+		span.
+			ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。<br>
+			nullとundefinedの違いについては
+		span
+			+pagelink('nullとundefined, NaN', 'null-and-undefined')
+		span を参照してください。
+
+		div.
+			NaNはあまり馴染みがありませんが、数字に変換しようとして数字にならなかった場合に発生します。
+			例えば下記のように無茶なことをすると結果はNaNになります。
+		script(title="NaN" type="code/Javascript").
+			var c = "文字列で" / "割り算";
+			console.log(c); // -> NaN
+
+		div.
+			他のプログラミング言語ではエラーになって終了してしまうところですが、Javascriptではそのまま処理が進みます。
+
+	section
+		h1 文字列は空文字以外、true
+		div.
+			文字列は空文字以外はtrueと判定されます。例えば"false"は文字列なのでtrueです。見た目にだまされないように！
+
+		script(title="falsyではない例", type="code/Javascript").
+			if (!false) console.log('falseだよ！');
+			if ('false') console.log('trueだよ！');
+
+		div.
+			falseでも"false"でも、console.logで出力するとデバッガには両方クォートなしのfalseとして表示されます。
+			chromeではbooleanのfalseが青文字、文字列'false'が黒文字になります。
+			でもぱっとみ、どっちがどっちかわかりません。
+
+		script(title="console.logでみるfalseと'false'", type="code/Javascript").
+			console.log(false); // false: 青文字
+			console.log('false'); // false: 黒文字
+
+		p console.logで値を出しつつデバッグしていると「値がfalseなのにtrueの分岐に進む」ようにみえることがあるかもしれません。
+		p そんなときは文字列として格納されていないかをチェック。
+
+		script(title="booleanかstringかを判定する", type="code/Javascript").
+			var a = "false";
+			console.log(typeof a + ":" + a); // -> string:false
+
+		div デバッガで止めて、その都度チェックすると良いでしょう。
+
+	section
+		h1 6つの値以外はtrueだと言いました
+		div しつこいようですが、6つのfalsyな値以外はtrueと判定されます。
+		div ややこしいのが、Javascriptに用意されているBooleanオブジェクトです。
+
+		script(title="Booleanオブジェクトの判定", type="code/Javascript").
+			var b_true = new Boolean(true);
+			var b_false = new Boolean(false);
+
+			if(b_true) console.log("b_true:true!");
+			if(b_false) console.log("b_false:true!");
+
+		div 長いこと仕事でJavascriptとたわむれてきましたが、Booleanオブジェクトを使用しなくてはいけないケースはありませんでした。
+		div なのでプリミティブのbooleanを使っておけば間違いないです。
+
+	section
+		h1 まとめ
+		ul
+			li Javascriptでfalseと判定される値は６つ
+			li それ以外は全部true
+
+		div.
+			これがわからないままだと先に進めませんよ！
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
