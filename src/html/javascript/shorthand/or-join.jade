@@ -15,10 +15,10 @@ block contents
 			+pagelink('falsyな値', '../../javascript/falsy')
 			| の理解が前提知識として必要です。まだの人はいったんそちらを修了してから見てください。
 
-		p.
+		div.
 			JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。そもそもboolean同士でしかこの書き方はできません。
 
-		p.
+		div.
 			これはJavascript特有の書き方で、bかcの、どちらかtruthyと判定されたほうがaに代入されます。
 			bとcの型は問いません。
 
@@ -39,7 +39,7 @@ block contents
 		div 変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。
 		div 最後から2つ目までにtrueと判定されないと、最後の値がtrue/falseにかかわらず代入されます。
 
-		p これを利用して、値が入っていない場合にデフォルト値を用意するといった使い方があります。
+		div これを利用して、値が入っていない場合にデフォルト値を用意するといった使い方があります。
 
 		script(title="デフォルト値を用意する",type="code/Javascript").
 			// 引数がfalsyなら"default"を表示する関数
@@ -73,7 +73,7 @@ block contents
 			fnc(false); // -> "default"
 			fnc('ABC'); // -> "ABC"
 
-		p 最初は結構ハマります。
+		div 最初は結構ハマります。
 
 
 // ライター情報

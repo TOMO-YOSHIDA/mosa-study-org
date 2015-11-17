@@ -1,0 +1,72 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Javascript: 変数のスコープ
+
+// 記事本文
+block contents
+	h1 変数のスコープ
+
+	section
+		h1 変数スコープを知る
+
+		div.
+
+
+
+
+
+		script(title="変数のスコープは関数内",type="code/Javascript").
+
+			var a = "A"; // 関数の外
+			function fncB(){
+				var b = "B";
+				console.log(a); // aが見える
+				console.log(b); // bが見える
+			};
+
+			fnc(); // 関数を実行するとaが見える
+
+			console.log(a); // aが見える
+			console.log(b); // bが見えない(Uncaught ReferenceError: b is not defined(…))
+
+		div.
+			この結果を見ると、変数は関数の内側でのみ参照できることがわかります。
+			また、fncB関数の内側では外側の変数aも参照できます。
+
+	section
+		h1 varなし宣言はグローバル
+		div.
+			Javascriptでは、varをつけずに変数を宣言することができます。
+			しかし、プロならvarなし宣言は禁止です。
+		div なぜなら、varなしの宣言はグローバル変数となり、どこからでも参照できてしまうからです。
+		div どこからでも参照できる、ということはどこからでも書き換えられてしまいます。
+
+		script(title="varなしの場合はグローバル変数になる",type="code/Javascript").
+
+			function A(){
+				a = "A";
+			}
+
+			function B(){
+				console.log(a); // aが見える！
+				a = "not A";
+			}
+
+			function C(){
+				console.log(a);
+			}
+
+
+	section
+		h1 まとめ
+		ul
+			li var宣言無しではグローバル変数となる
+			li var宣言のスコープは関数の内側
+			li 原則、varなしの変数宣言は禁止
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

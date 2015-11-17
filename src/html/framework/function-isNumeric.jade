@@ -11,7 +11,7 @@ block contents
 	section
 		h1 数値判定関数
 
-		p.
+		div.
 			渡された値が「数字であるか？」のチェックを提供する関数を作成してみます。
 
 		script(title="数字判定関数", type="code/Javascript").
@@ -48,12 +48,12 @@ block contents
 			console.log(isNumeric('ABC'));
 
 		div これで数字判定ができるようになりました。
-		p.
+		div.
 			広く使われているjQueryでは<code>$.isNumeric</code>関数を提供しています。
 			この関数ではInfinityも数字ではないとして扱います。
 			16行目のコメントアウトを外せば同様の動作となります。
 
-		p.
+		div.
 			しかし数字判定一つでずいぶん長ったらしいコードになりました。
 			ショートハンドで書きなおしてみましょう。
 
@@ -114,14 +114,14 @@ block contents
 		div short版: 4788.360ms
 		div という残念な結果になってしまいました。
 
-		p 何度か計測してみましたが、だいたい同じ結果です。
+		div 何度か計測してみましたが、だいたい同じ結果です。
 
-		p.
+		div.
 			なぜshort版が遅いのかというと、<code>!</code>演算子による「true/falseを判定して結果を反転する」分、処理が多くなっているから。
 			それでも150万回の判定を行って約200ms、4%の性能差。
 			4%は意外と響いてくる数字なので、ちょっとくらいコードが長くても速い方を選んだほうが良さそうです。
 
-		p 正直、ここまで差があるとは思わなかった。
+		div 正直、ここまで差があるとは思わなかった。
 
 	section
 		+infolink('nullとundefined, NaN', '../javascript/null-and-undefined')

@@ -35,7 +35,7 @@ block contents
 
 		div.
 			undefinedは「未定義」の意味であり、varで変数を宣言したが代入されていないもの、またはオブジェクトの存在しないプロパティがundefinedとして判定されます。
-		p.
+		div.
 			対してnullは明示的に代入されたものなので、誰かが意図してnullに設定したものです。
 			デバッグ時にundefinedが出てきたら、スペルミスの場合も多々あります。
 
@@ -68,20 +68,15 @@ block contents
 
 		div なんと、NaN同士はイコールになりません。
 		div そのかわり、<code>!==</code>でtrueと判定されます。なんてステキなあまのじゃく。
-		p イコール演算子の存在意義を否定するような動作ですが、同一オブジェクトにも関わらず"イコールではない"と判定されるのはNaNだけです。
-		p.
+		div イコール演算子の存在意義を否定するような動作ですが、同一オブジェクトにも関わらず"イコールではない"と判定されるのはNaNだけです。
+		div.
 			<code>value !== value</code>なので間違えないように。<br>
 			<code>value !== NaN</code>だと全てがfalseになるので使えません。
 
-		p.
+		div.
 			NaNそのものを判定するケースは少なく、「数字であるか？」の様なパラメータチェック的な用途が多いと思います。
 			それをプロジェクトのフレームワークとして提供するのがいいでしょう。
 			共通化しておけば、もし判定ロジックにバグがあっても修正は一箇所で済みます。
-
-		+infolink('数値判定(isNumeric)関数の作成', 'framework/function-isNumeric')
-		div.space
-		div 補足：NaNそのものをチェックする<code>Number.isNaN</code>関数がありますが、ES6提案であり、IEでは使えません。
-		+exlink('Number.isNaN()', 'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN')
 
 	section
 		h1 まとめ
@@ -90,6 +85,10 @@ block contents
 			li nullは代入済み
 			li NaNは数字になれなかったヤツ
 			li NaNを判定するには<code>value !== value</code>を使う
+
+		+infolink('数値判定(isNumeric)関数の作成', 'framework/function-isNumeric')
+		div 補足：NaNそのものをチェックする<code>Number.isNaN</code>関数がありますが、ES6提案であり、IEでは使えません。
+		+exlink('Number.isNaN()', 'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN')
 
 // ライター情報
 block writer

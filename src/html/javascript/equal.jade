@@ -44,11 +44,11 @@ block contents
 			Javascriptにおいて、"=="は、「ざっくり同じ値か比較する」という意味になります。
 			ざっくりなので、似ているモノ同士はtrueと判定します。
 			初心者本にはこの記法で書かれているものが多く、そのまま業務に突入する人もけっこういます。
-		p.
+		div.
 			この「似ているとみなす」のは言語仕様できっちり決まっているので、ここではっきりさせておきます。
 			まずは下記の例を見てください。
 
-		script(title="二重イコール演算子による比較",type="code/javascript").
+		script(title="二重イコール演算子による比較",type="code/Javascript").
 			console.log( "" == false ); // true
 			console.log( 0 == false ); // true
 			console.log( 0 == "" ); // true
@@ -58,7 +58,7 @@ block contents
 			console.log( 1 == true ); // true
 			console.log( null == undefined ); // true
 		div 空文字とfalse、ゼロはそれぞれ同じである、と判定されてしまいました。
-		p 数字1と文字列"1"は、同じでも良い気がしますが、数字1とbooleanのtrueが同じになっています。これは良くないですね。
+		div 数字1と文字列"1"は、同じでも良い気がしますが、数字1とbooleanのtrueが同じになっています。これは良くないですね。
 
 	section
 		h1 二重イコール演算子の比較結果
@@ -82,8 +82,7 @@ block contents
 			+pagelink('前節で解説', './null-and-undefined')
 			| していますので、そちらを参照してください。
 
-		div.space
-		p 次はtruthyな値を比較してみます。
+		div 次はtruthyな値を比較してみます。
 		- var caption = 'truthyな値を二重イコール演算子で比較';
 		- var data = ['1', 1, true, '3', 3, '-1', -1];
 		- var compare = function(a,b){return a == b};
@@ -93,7 +92,7 @@ block contents
 			1, "1", trueはそれぞれ「同じである」と判定されます。
 			0,1以外の値はboolean値と同じであると判定されることはありません。
 
-		p.
+		div.
 			二重イコール演算子では数字と文字列を比較する場合は、そこそこ期待通りの動きをします。
 			ただ、空文字と0が同じと判定されるのを許容するので、未入力とゼロの場合わけを考えておかないと、あとで痛い目をみます。
 
@@ -103,7 +102,7 @@ block contents
 			次は三重イコール演算子です。三重イコール演算子は、両者を厳密に比較します。
 			1と"1"の様に、似ているものであっても容赦なく違う！と判定します。
 
-		script(title="三重イコール演算子による比較",type="code/javascript").
+		script(title="三重イコール演算子による比較",type="code/Javascript").
 			console.log( "" === false ); // false
 			console.log( 0 === false ); // false
 			console.log( 0 === "" ); // false
@@ -115,7 +114,7 @@ block contents
 
 		div.
 			今度は全てが「同じではない」と判定されました。
-		p 三重演算子の比較結果を表にすると、下記のようになります。
+		div 三重演算子の比較結果を表にすると、下記のようになります。
 
 	section
 		- var caption = 'falsyな値を三重イコール演算子で比較';
@@ -146,7 +145,7 @@ block contents
 			とはいえ、二重イコール演算子にはnullとunefinedをいっぺんに判定してくれる便利さもあります。
 			nullかundefindの判定だったら<code>value == null</code>の二重イコール演算子で十分でしょう。
 
-		p 両方の特性を考えて、正しい選択ができるようになってください。
+		div 両方の特性を考えて、正しい選択ができるようになってください。
 
 	section
 		h1 まとめ
