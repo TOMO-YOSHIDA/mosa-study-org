@@ -1,0 +1,23 @@
+//- index.jadeで使用するリンク(liタグつき)
+mixin index(title, url)
+	li
+		a(href=url+".html")= title
+
+//- 記事内で使用するリンク
+mixin pagelink(title, url)
+	span 「
+	a(href=url+".html")= title
+	span 」
+
+
+//- 参考リンク(同一タブ内で遷移)
+mixin infolink(title, url)
+	div.info
+		| 参考:
+		a(href=url+".html")= title
+
+//- 外部リンクへ(新規タブが立ち上がる)
+mixin exlink(title, url)
+	div.exlink
+		| 参考(外部リンク)：
+		a(href=url target="_blank")= title

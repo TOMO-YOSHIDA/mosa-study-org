@@ -54,7 +54,7 @@ gulp.task('bower', function () {
 	gulp.src(css)
 		.pipe(plum())
 		.pipe(concat('_lib.min.css'))
-		.pipe(gulp.dest('public/css'));
+		.pipe(gulp.dest('public/temp'));
 
 	var jslib = marge(bowers('js', 'min.js'));
 	jslib.push('src/scripts/**/*.js') // bowerだけど自作JSも含める
@@ -75,11 +75,11 @@ gulp.task('less-compile', function () {
 	return gulp.src(lessPath)
 		.pipe(plum())
 		.pipe(less())
-		.pipe(gulp.dest('public/css'));
+		.pipe(gulp.dest('public/temp'));
 });
 // styledocco
 gulp.task('styledocco', function () {
-	gulp.src('public/css/**/*.css')
+	gulp.src('public/temp/**/*.css')
 		.pipe(plum())
 		.pipe(styledocco({
 			out: 'public/style-guide',
@@ -90,11 +90,11 @@ gulp.task('styledocco', function () {
 });
 // css minify
 gulp.task('css-minify', function () {
-	gulp.src('public/css/**/*.css')
+	gulp.src('public/temp/**/*.css')
 		.pipe(concat(application_name + '.css'))
 		.pipe(autoprefixer())
 		.pipe(minifyCss())
-		.pipe(gulp.dest('public'));
+		.pipe(gulp.dest('public/'));
 });
 
 // ページ固有のless

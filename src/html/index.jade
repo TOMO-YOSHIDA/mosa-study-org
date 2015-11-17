@@ -1,0 +1,72 @@
+doctype html
+
+include mixin
+
+html
+	head
+		title 勉強会資料
+		link(rel="stylesheet" href="/study.css")
+	body
+		article
+			h1 勉強会資料
+
+			section
+				h1 はじめに
+				div.
+					知っておくべきこと、パフォーマンス・チューニングの小技など。
+					各項目は電車の中で気軽に読めるくらいのボリュームにしています。
+					はやりすたりのあるライブラリの使い方についてはあまり触れるつもりはありません。ときどきで。
+				p メインは「ずっと使える」知識を紹介します。
+
+			section
+				h1 Javascript 知識編
+				ol
+					li 基礎知識
+						ul
+							li.disabled javascriptの型
+							li.disabled 暗黙の型変換
+							+index('nullとundefind, NaN', 'javascript/null-and-undefined')
+							+index('値の比較「==」と「===」', 'javascript/equal')
+							+index('falsyな値', 'javascript/falsy')
+
+					li ショートハンド(略記法)
+						ul
+							li.disabled 3項演算子
+							+index('ショートハンドとは', 'javascript/shorthand/shortHand')
+							+index('「||」の使い方', 'javascript/shorthand/or-join')
+
+					li 中級編
+						ul
+							li.disabled 変数のスコープ
+							li.disabled this
+							li.disabled ArrayとObject
+			section
+				h1 Javascript 実践編
+				ol
+					li 共通関数を作ってみる
+						ul
+							+index('ストップウォッチ関数', 'javascript/stopwatch')
+							+index('数値判定(isNumeric)関数の作成', 'framework/function-isNumeric')
+
+					li 仕事で使えるテクニック
+						ul
+							+index('パフォーマンス計測', 'javascript/performance')
+						// prototype
+						// Arrayを知る(push,pop,shift,unshift)
+						// 	Array.sort
+						// 	shuffleのprototype実装
+						// 正規表現
+						// 	正規表現リテラルとRegExp
+						// 	入力値のチェック RegExp.test
+						// 	前ゼロを除去する"0010" -> "10"
+			// section
+			// 	h1 CSS
+			//		ol
+					// flex
+					// レスポンシブ
+					// 脱bootstrap
+			section
+				h1 appendix
+				ol
+					+index('style guide', 'style-guide/index')
+					+index('codehighlight.jsについて', 'appendix/codehighlight')

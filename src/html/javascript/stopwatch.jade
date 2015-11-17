@@ -1,0 +1,52 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Javascript: ストップウォッチ関数
+
+// 記事本文
+block contents
+	h1 ストップウォッチ関数
+
+	section
+		h1 パフォーマンス測定関数の作成
+		div
+			a(href="./performance.html") パフォーマンス測定
+			| で紹介した<code>console.time</code>関数が用意されていないブラウザもあります。
+			| そんな時は、自分で作ってしまいましょう。<br>
+			| ただしDate関数から時間を取得するので、精度はミリ秒です。
+
+		script(title="IEには関数がないので自作する",type="code/javascript").
+
+			+function(){
+				// ここに計測開始時間をキャッシュ
+				var cache = {};
+
+				// 計測開始
+				if(!console.time) { // すでに存在するなら上書きしない
+					console.time = function(key){
+						cache[key] = Date.now();
+					};
+				}
+
+				// 計測終了
+				if(!console.timeEnd) { // すでに存在するなら上書きしない
+					console.timeEnd = function(key){
+						var end = Date.now();
+						var start = cache[key];
+						if(!key) return; // 対応する開始時間がなければ抜ける
+
+						console.log(end - start + " ms");
+						delete cache[key]; // キャッシュのお掃除
+					};
+				}
+			}();
+
+		div 6行目、13行目を見てください。consoleオブジェクトを拡張する前に、すでに実装があるかをチェックするのは大切です。
+		div Javascriptでは、ビルトイン関数やメソッドのほとんどを上書きできます。
+		div チェックせずにネイティブ実装を上書きしてしまうと、計測精度が下がってしまいます。
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

@@ -1,0 +1,81 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Javascript: 「||」の使い方
+
+// 記事本文
+block contents
+	h1 「||」の使い方
+	section
+		h1 「||」の使い方
+		div
+			| Javascriptでは、<code>var a = b || c;</code>の様な表記がたくさん出てきます。
+			+pagelink('falsyな値', '../../javascript/falsy')
+			| の理解が前提知識として必要です。まだの人はいったんそちらを修了してから見てください。
+
+		p.
+			JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。そもそもboolean同士でしかこの書き方はできません。
+
+		p.
+			これはJavascript特有の書き方で、bかcの、どちらかtruthyと判定されたほうがaに代入されます。
+			bとcの型は問いません。
+
+		script(title="「||」の構文",type="code/Javascript").
+			var a = false;
+			var b = 0;
+			var c = "";
+			var d = "ABC";
+
+			console.log(a || b || c || d); // -> "ABC"
+			console.log(a || b || c || null); // -> null
+
+			// dが二番目にtrueと評価され、それ以降は無視
+			console.log(a || d || b || c); // -> "ABC"
+
+		div どういうこと？
+		div 「||」は、左から順番に変数を判定していきます。
+		div 変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。
+		div 最後から2つ目までにtrueと判定されないと、最後の値がtrue/falseにかかわらず代入されます。
+
+		p これを利用して、値が入っていない場合にデフォルト値を用意するといった使い方があります。
+
+		script(title="デフォルト値を用意する",type="code/Javascript").
+			// 引数がfalsyなら"default"を表示する関数
+			var fnc = function(v) {
+				console.log(v || "default");
+			}
+
+			fnc(null); // -> "default"
+			fnc(""); // -> "default"
+			fnc(0); // -> "default"
+			fnc(false); // -> "default"
+			fnc('ABC'); // -> "ABC"
+
+		div.
+			nullやundefinedならデフォルト値を使いたいが、空文字や0はそのまま使いたい場合、引数チェックが必要になります。
+			falseと判定される条件６つを全てシミュレートしたうえで使うようにしてください。
+
+		script(title="ゼロと空文字は許す",type="code/Javascript").
+			// 引数がfalsyなら"default"を表示する関数
+			var fnc = function(v) {
+				if(v === 0 || v === "") {
+					console.log(v); // ゼロと空文字をそのまま表示
+				} else {
+					console.log(v || "default");
+				}
+			}
+
+			fnc(null); // -> "default"
+			fnc(""); // -> ""
+			fnc(0); // -> "0"
+			fnc(false); // -> "default"
+			fnc('ABC'); // -> "ABC"
+
+		p 最初は結構ハマります。
+
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

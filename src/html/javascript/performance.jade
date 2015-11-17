@@ -1,0 +1,51 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Javascript: パフォーマンスの測定
+
+// 記事本文
+block contents
+	h1 パフォーマンスの測定
+
+	section
+		div なんだかJavascriptの処理が遅いぞ？
+		p.
+			そんな時、どこの処理が足を引っ張っているのかを特定する必要があります。chromeを使っているなら、devtoolのprofilesから詳細を見られます。
+		div お手軽なのは、chromeのdevtoolから<code>console.time</code>と<code>console.timeEnd</code>を使用する方法。<br>
+		div <code>time</code>と<code>timeEnd</code>に同じ文字列を渡すと、かかった時間をミリ秒単位で表示してくれます。<br>
+		div プログラムに書いておけば、実行時に毎回計測してくれます。
+
+		script(title="chromeで処理時間を計測する",type="code/javascript").
+
+			// ここから計測開始
+			console.time('for文')
+
+			// 100万個の要素にnullをセットする
+			var a = new Array(1000 * 1000);
+			for(var i = 0; i < a.length; i++) {
+				a[i] = null;
+			}
+
+			// ここまでかかった時間を出力する
+			console.timeEnd('for文')
+
+			// -> for文: 1540.239ms
+
+		div ミリ秒単位ですが小数点以下３桁まで表示してくれるので、実際はマイクロ秒オーダーです。すばらしい。
+		p.
+			パフォーマンスチューニングは、計測だけでは意味がありません。必ず変更前後で数値を計測・効果測定しましょう。
+
+		p.
+			IEとかで<code>time</code>も<code>timeEnd</code>もないよ！っていう場合。
+			consoleはビルトインオブジェクトですが、自分で拡張できます！
+		p
+			| consoleオブジェクトの拡張例は
+			+pagelink('ストップウォッチ関数', "stopwatch")
+			| で解説します。
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
