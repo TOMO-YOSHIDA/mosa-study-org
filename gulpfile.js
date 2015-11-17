@@ -1,4 +1,4 @@
-var application_name = 'web-learning';
+var application_name = 'study';
 
 var gulp = require('gulp')
 	, del = require('del')
@@ -15,10 +15,10 @@ var gulp = require('gulp')
 	;
 
 
-var tsPath = ['js/**/*.ts'],
-	lessPath = 'css/**/*.less',
-	lessSubPath = 'css-sub/**/*.less',
-	jadePath = 'html/**/*.jade';
+var tsPath = ['src/js/**/*.ts'],
+	lessPath = 'src/css/**/*.less',
+	lessSubPath = 'src/css-sub/**/*.less',
+	jadePath = 'src/html/**/*.jade';
 
 
 var tsSetting = {
@@ -57,8 +57,9 @@ gulp.task('bower', function () {
 		.pipe(gulp.dest('public/css'));
 
 	var jslib = marge(bowers('js', 'min.js'));
+	jslib.push('src/scripts/**/*.js') // bowerだけど自作JSも含める
 	gulp.src(jslib)
-	// .pipe(uglify()) // ハングする
+	.pipe(uglify()) // ハングする
 		.pipe(concat('_lib.min.js'))
 		.pipe(gulp.dest('public/js'));
 });
@@ -121,12 +122,8 @@ gulp.task('watch', function () {
 	gulp.watch(lessSubPath, ['sub-less']);
 });
 
-gulp.task('sonota', function () {
-	gulp.src('js/**/*.js').pipe(gulp.dest('public/js/'))
-});
-
 gulp.task('build', function () {
-	runSequence('clean', 'bower', 'less', 'sub-less', 'jade', 'sonota');
+	runSequence('clean', 'bower', 'less', 'sub-less', 'jade');
 });
 
 // build & watch
