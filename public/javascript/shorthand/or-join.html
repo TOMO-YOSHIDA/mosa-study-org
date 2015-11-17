@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript: 「||」の使い方</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>「||」の使い方</h1>
+      <section>
+        <h1>「||」の使い方</h1>
+        <div>Javascriptでは、<code>var a = b || c;</code>の様な表記がたくさん出てきます。<span>「</span><a href="../../javascript/falsy.html">falsyな値</a><span>」</span>の理解が前提知識として必要です。まだの人はいったんそちらを修了してから見てください。
+        </div>
+        <div>
+          JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。そもそもboolean同士でしかこの書き方はできません。
+          
+        </div>
+        <div>
+          これはJavascript特有の書き方で、bかcの、どちらかtruthyと判定されたほうがaに代入されます。
+          bとcの型は問いません。
+          
+        </div>
+        <script title="「||」の構文" type="code/Javascript">
+          var a = false;
+          var b = 0;
+          var c = "";
+          var d = "ABC";
+          
+          console.log(a || b || c || d); // -> "ABC"
+          console.log(a || b || c || null); // -> null
+          
+          // dが二番目にtrueと評価され、それ以降は無視
+          console.log(a || d || b || c); // -> "ABC"
+          
+        </script>
+        <div>どういうこと？</div>
+        <div>「||」は、左から順番に変数を判定していきます。</div>
+        <div>変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。</div>
+        <div>最後から2つ目までにtrueと判定されないと、最後の値がtrue/falseにかかわらず代入されます。</div>
+        <div>これを利用して、値が入っていない場合にデフォルト値を用意するといった使い方があります。</div>
+        <script title="デフォルト値を用意する" type="code/Javascript">
+          // 引数がfalsyなら"default"を表示する関数
+          var fnc = function(v) {
+          	console.log(v || "default");
+          }
+          
+          fnc(null); // -> "default"
+          fnc(""); // -> "default"
+          fnc(0); // -> "default"
+          fnc(false); // -> "default"
+          fnc('ABC'); // -> "ABC"
+          
+        </script>
+        <div>
+          nullやundefinedならデフォルト値を使いたいが、空文字や0はそのまま使いたい場合、引数チェックが必要になります。
+          falseと判定される条件６つを全てシミュレートしたうえで使うようにしてください。
+          
+        </div>
+        <script title="ゼロと空文字は許す" type="code/Javascript">
+          // 引数がfalsyなら"default"を表示する関数
+          var fnc = function(v) {
+          	if(v === 0 || v === "") {
+          		console.log(v); // ゼロと空文字をそのまま表示
+          	} else {
+          		console.log(v || "default");
+          	}
+          }
+          
+          fnc(null); // -> "default"
+          fnc(""); // -> ""
+          fnc(0); // -> "0"
+          fnc(false); // -> "default"
+          fnc('ABC'); // -> "ABC"
+          
+        </script>
+        <div>最初は結構ハマります。</div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript: パフォーマンスの測定</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>パフォーマンスの測定</h1>
+      <section>
+        <div>なんだかJavascriptの処理が遅いぞ？</div>
+        <div>
+          そんな時、どこの処理が足を引っ張っているのかを特定する必要があります。
+          chromeを使っているなら、devtoolのprofilesから詳細を見られます。
+        </div>
+        <div>お手軽なのは、chromeのdevtoolから<code>console.time</code>と<code>console.timeEnd</code>を使用する方法。<br></div>
+        <div><code>time</code>と<code>timeEnd</code>に同じ文字列を渡すと、かかった時間をミリ秒単位で表示してくれます。<br></div>
+        <div>プログラムに書いておけば、実行時に毎回計測してくれます。</div>
+        <script title="chromeで処理時間を計測する" type="code/Javascript">
+          // ここから計測開始
+          console.time('for文')
+          
+          // 100万個の要素にnullをセットする
+          var a = new Array(1000 * 1000);
+          for(var i = 0; i < a.length; i++) {
+          	a[i] = null;
+          }
+          
+          // ここまでかかった時間を出力する
+          console.timeEnd('for文')
+          
+          // -> for文: 1540.239ms
+          
+        </script>
+        <div>ミリ秒単位ですが小数点以下３桁まで表示してくれるので、実際はマイクロ秒オーダーです。すばらしい。</div>
+        <div>
+          パフォーマンスチューニングは、計測だけでは意味がありません。必ず変更前後で数値を計測・効果測定しましょう。
+          
+        </div>
+        <div>
+          IEとかで<code>time</code>も<code>timeEnd</code>もないよ！っていう場合。
+          consoleはビルトインオブジェクトですが、自分で拡張できます！
+        </div>
+        <div>consoleオブジェクトの拡張例は<span>「</span><a href="stopwatch.html">ストップウォッチ関数</a><span>」</span>で解説します。
+        </div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>

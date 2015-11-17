@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>codehighlight.jsについて</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>codehighlight.jsについて</h1>
+      <section>
+        <h1>codehighlight.jsとは</h1>
+        <div>
+          JavascriptやCSSのソースを、いい感じにハイライト表示してくれるJavascriptです。
+          すでに有名どころとして<code>Crayon Syntax Highlighter</code>や<code>highlight.js</code>がありますが、<code>&lt;</code>や<code>&gt;</code>はサニタイズする必要があり、そのまま貼り付けられないので面倒。
+        </div>
+        <div>というわけで、簡単に作れるかな？と思い</div>
+        <ul>
+          <li>外部ライブラリを使用しない</li>
+          <li>Typescriptで書く</li>
+          <li>とにかく軽く</li>
+        </ul>
+        <div>をコンセプトに作成しました。</div>
+      </section>
+      <section>
+        <h1>そして作ってみた</h1>
+        <div>実際に作ってみたところ、意外とめんどくさい。最初は正規表現でちゃっちゃとイケるでしょと思ってた。</div>
+        <div>
+          ところがそう簡単にはいかない。
+          例えばJavascriptのコメントは<code>//</code>から始まってればコメントだよねと思いきや、文字列の中に出てくるヤツもいる。
+          <code>"〜"</code>なら文字列だよねと思いきや、正規表現リテラルの中にザラに出現する。
+          
+        </div>
+        <div>
+          そんなこんなを乗り越えて、codehighlight.jsはとりあえず完成しました。
+          業務の間に、なんだかんだで1週間くらいかかった。
+          
+        </div>
+      </section>
+      <section>
+        <h1>bower対応</h1>
+        <div>codehighlight.jsとこの勉強会資料とはプロジェクトを分けたので、いちいちファイルコピーしなくてもいいようにbowerに登録してみた。</div>
+        <div><code>> bower install codehighlight.js</code></div>
+        <div>
+          でインストールできます。<br>
+          が、修正のたびにbowerにバージョン情報を登録するのが面倒になって、開発環境では結局シンボリックリンクにしてしまいました。
+          
+        </div>
+        <div>バージョン情報は</div>
+        <div><code>> bower info codehighlight.js</code></div>
+        <div>で確認できます。</div>
+      </section>
+      <section>
+        <h1>作ってみて、感想</h1>
+        <div>
+          bower公開するということで、github上にソースがさらされることになります。
+          「見られても良いコード」を意識しましたが途中で面倒になりました。
+          どうせ誰も見ないよ。
+          あそことあそことあそこはそのうち直そう。。。
+          
+        </div>
+      </section>
+      <section>
+        <h1>github公開中</h1>
+        <div>codehighlight.jsはgithubで公開しています。</div>
+        <div class="exlink">参考(外部リンク)：<a href="https://github.com/TOMO-YOSHIDA/codehighlight.js" target="_blank">codehighlight.js(github)</a></div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>

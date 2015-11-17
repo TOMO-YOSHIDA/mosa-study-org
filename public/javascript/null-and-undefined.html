@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript: nullとundefined, NaN</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>nullとundefined, NaN</h1>
+      <section>
+        <div>
+          Javascriptの値である、nullとundefinedとNaNについて解説します。
+          「無効な値」としてよく出てきますが、それぞれ違うものなので混同しないように。
+          
+        </div>
+      </section>
+      <section>
+        <h1>nullとundefined</h1>
+        <div>
+          まずはnullとundefinedの例。
+          比較的似た者同士。
+          
+        </div>
+        <script title="unllとundefined" type="code/Javascript">
+          // 変数の定義
+          var a;
+          var b = null;
+          console.log(a); // 宣言しただけではなにも代入していないのでundefined
+          console.log(b); // 明示的にnullを代入しているのでnull
+          
+          // 新しいオブジェクトを作成
+          var obj = {
+          	A:"string A!",
+          };
+          console.log(obj.A); // -> "string A!"
+          console.log(obj.B); // まだプロパティを定義していないのでundefined
+          
+        </script>
+        <div>undefinedは「未定義」の意味であり、varで変数を宣言したが代入されていないもの、またはオブジェクトの存在しないプロパティがundefinedとして判定されます。</div>
+        <div>
+          対してnullは明示的に代入されたものなので、誰かが意図してnullに設定したものです。
+          デバッグ時にundefinedが出てきたら、スペルミスの場合も多々あります。
+          
+        </div>
+      </section>
+      <section>
+        <h1>NaN (not a number)</h1>
+        <div>
+          NaNとは、「not a number」の略です。その名のとおり、変数が「数字ではない」状態。正確には「数字になりたかったのになれなかった数字」です。
+          計算式で、暗黙の型変換で数字として扱えなかった場合にNaNが返されます。
+          
+        </div>
+        <script title="NaN" type="code/Javascript">
+          var a = 1; // Number:1
+          var b = "ABC"; // String:ABC
+          
+          console.log(a / 2); // Number:0.5
+          console.log(a / b); // 1 ÷ "ABC"が計算できずにNaNになる
+          
+        </script>
+      </section>
+      <section>
+        <h1>NaNの判定方法</h1>
+        <div>
+          NaNの判定はちょっと特殊です。<code>===</code>による判定ができません！
+          
+        </div>
+        <script title="NaNの比較" type="code/Javascript">
+          // NaN同士はイコールではない！
+          console.log(NaN == NaN); // false;
+          console.log(NaN === NaN); // false;
+          
+          // NaN同士は違うオブジェクト?!
+          console.log(NaN != NaN); // true;
+          console.log(NaN !== NaN); // true;
+          
+        </script>
+        <div>なんと、NaN同士はイコールになりません。</div>
+        <div>そのかわり、<code>!==</code>でtrueと判定されます。なんてステキなあまのじゃく。</div>
+        <div>イコール演算子の存在意義を否定するような動作ですが、同一オブジェクトにも関わらず"イコールではない"と判定されるのはNaNだけです。</div>
+        <div>
+          <code>value !== value</code>なので間違えないように。<br>
+          <code>value !== NaN</code>だと全てがfalseになるので使えません。
+          
+        </div>
+        <div>
+          NaNそのものを判定するケースは少なく、「数字であるか？」の様なパラメータチェック的な用途が多いと思います。
+          それをプロジェクトのフレームワークとして提供するのがいいでしょう。
+          共通化しておけば、もし判定ロジックにバグがあっても修正は一箇所で済みます。
+          
+        </div>
+      </section>
+      <section>
+        <h1>まとめ</h1>
+        <ul>
+          <li>undefinedは変数がまだ初期化されていない、またはプロパティがない</li>
+          <li>nullは代入済み</li>
+          <li>NaNは数字になれなかったヤツ</li>
+          <li>NaNを判定するには<code>value !== value</code>を使う</li>
+        </ul>
+        <div class="info">参考:<a href="framework/function-isNumeric.html">数値判定(isNumeric)関数の作成</a></div>
+        <div>補足：NaNそのものをチェックする<code>Number.isNaN</code>関数がありますが、ES6提案であり、IEでは使えません。</div>
+        <div class="exlink">参考(外部リンク)：<a href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN" target="_blank">Number.isNaN()</a></div>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>

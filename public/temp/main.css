@@ -1,0 +1,236 @@
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: center;
+  background: #005c97;
+}
+body * {
+  font-family: "meiryo";
+  font-size: 1em;
+  line-height: 1.7em;
+}
+/*
+## disabled項目
+```
+<article>
+	<ul>
+		<li class="disabled">disabled
+		<li>active
+	<ul>
+</article>
+```
+*/
+.disabled {
+  color: #999;
+}
+section > div:first-letter,
+section > p:first-letter {
+  margin-left: 1em;
+}
+/*
+# article要素のマークアップ
+
+```
+<article>
+	<h1>タイトル</h1>
+	セクション内容
+</article>
+```
+*/
+article {
+  max-width: 60em;
+  min-width: 44em;
+  margin: 2em;
+  padding: 0 1.8em;
+  background: #FFF;
+  border-radius: 5px;
+}
+article > h1 {
+  font-size: 3em;
+  font-family: "arial black";
+}
+article .chl {
+  box-shadow: none;
+  margin: 1.5em 0;
+}
+/*
+# セクション要素のマークアップ
+
+```
+<article>
+	<section>
+		<h1>セクションタイトル</h1>
+		セクション内容
+	</section>
+</article>
+```
+*/
+section {
+  margin-top: 2em;
+}
+section:first-child {
+  margin-top: 0;
+}
+section > h1 {
+  font-family: "arial black";
+  font-size: 2em;
+  font-weight: bold;
+  border-left: 7px solid #333;
+  padding-left: 0.4em;
+  background: rgba(0, 92, 151, 0.2);
+  margin-bottom: 0.5em;
+}
+section > div {
+  margin-bottom: 0.7em;
+}
+ol,
+ul {
+  margin-left: 1em;
+  padding: 0;
+}
+ol > li,
+ul > li {
+  margin-left: 1em;
+}
+/*
+## block要素内をセンタリング
+```
+<div class="flex-center" style="background:#CCC">
+	<div>要素のセンタリング</div>
+</div>
+```
+*/
+.flex-center {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+/*
+## 空行を開ける目的。spanとかでも可
+```
+<div>ここに↓</div>
+<div class="space"></div>
+<div>空行がある↑</div>
+```
+*/
+.space {
+  display: block;
+  height: 1em;
+}
+div.main {
+  max-width: 600px;
+  margin: auto;
+}
+/*
+## バックボタン
+```
+<a class="back">BACK</a>
+```
+*/
+a.btn {
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 5px;
+  color: #FFF;
+  background-color: #005c97;
+  width: 100px;
+  text-align: center;
+  padding: 2px;
+}
+a.btn:hover {
+  color: #FFF;
+  text-shadow: 0 0 1px #FFF;
+}
+a {
+  font-weight: bold;
+  color: #005c97;
+  text-decoration: none;
+}
+a:hover {
+  color: #0081d3;
+}
+/*
+## ライター情報(template.jade)
+```
+<footer>
+	<div class="writer">
+		<h4>著者</h4>
+		<div class="name">
+			書いた人の名前
+		</div>
+		<div class="description">
+			肩書や経歴など
+		</div>
+	</div>
+</footer>
+```
+*/
+div.writer {
+  margin-top: 2em;
+  font-weight: bold;
+}
+div.writer .title {
+  height: 2em;
+  display: inline-block;
+  padding: 0.2em 2em ;
+  background: #005c97;
+  border-radius: 0.5em;
+  margin-bottom: 0.4em;
+  color: white;
+  vertical-align: bottom;
+}
+div.writer .name {
+  color: #339;
+}
+div.writer .pic {
+  align: right;
+}
+div.writer .description {
+  color: #333;
+}
+li {
+  margin-left: 1.5em;
+}
+code {
+  font-family: "meiryo";
+  font-size: 1em;
+  display: inline-block;
+  border-radius: 0.5em;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0 0.2em;
+}
+table {
+  width: 100%;
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin-bottom: 2em;
+}
+table caption {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+table th,
+table td {
+  text-align: center;
+  font-weight: bold;
+  border: 1px solid black;
+  width: 8em;
+}
+table th {
+  background: rgba(0, 92, 151, 0.4);
+}
+table td.true {
+  color: #005c97;
+}
+table td.false {
+  color: #97005c;
+}

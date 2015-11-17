@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript: 変数のスコープ</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>変数のスコープ</h1>
+      <section>
+        <h1>変数スコープを知る</h1>
+        <div></div>
+        
+        
+        
+        <script title="変数のスコープは関数内" type="code/Javascript">
+          var a = "A"; // 関数の外
+          function fncB(){
+          	var b = "B";
+          	console.log(a); // aが見える
+          	console.log(b); // bが見える
+          };
+          
+          fnc(); // 関数を実行するとaが見える
+          
+          console.log(a); // aが見える
+          console.log(b); // bが見えない(Uncaught ReferenceError: b is not defined(…))
+          
+        </script>
+        <div>
+          この結果を見ると、変数は関数の内側でのみ参照できることがわかります。
+          また、fncB関数の内側では外側の変数aも参照できます。
+          
+        </div>
+      </section>
+      <section>
+        <h1>varなし宣言はグローバル</h1>
+        <div>
+          Javascriptでは、varをつけずに変数を宣言することができます。
+          しかし、プロならvarなし宣言は禁止です。
+        </div>
+        <div>なぜなら、varなしの宣言はグローバル変数となり、どこからでも参照できてしまうからです。</div>
+        <div>どこからでも参照できる、ということはどこからでも書き換えられてしまいます。</div>
+        <script title="varなしの場合はグローバル変数になる" type="code/Javascript">
+          function A(){
+          	a = "A";
+          }
+          
+          function B(){
+          	console.log(a); // aが見える！
+          	a = "not A";
+          }
+          
+          function C(){
+          	console.log(a);
+          }
+          
+          
+        </script>
+      </section>
+      <section>
+        <h1>まとめ</h1>
+        <ul>
+          <li>var宣言無しではグローバル変数となる</li>
+          <li>var宣言のスコープは関数の内側</li>
+          <li>原則、varなしの変数宣言は禁止</li>
+        </ul>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>

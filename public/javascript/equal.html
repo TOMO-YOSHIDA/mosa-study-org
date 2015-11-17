@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Javascript: 値の比較"=="と"==="</title>
+    <link rel="stylesheet" href="/study.css">
+  </head>
+  <body>
+    <article>
+      <h1>値の比較"=="と"==="</h1>
+      <section>
+        <h1>二重イコール演算子と三重イコール演算子</h1>
+        <div>"=="は二重イコール演算子、"==="三重イコール演算子といいます。</div>
+        <div>
+          もちろん同じではなく、Javascriptでは重要な役割をします。
+          順番に見ていきましょう。
+          
+        </div>
+      </section>
+      <section>
+        <h1>二重イコール演算子(==)</h1>
+        <div>
+          二重イコール演算子は、Javascript以外の言語でも見たことがあると思います。
+          Javascriptにおいて、"=="は、「ざっくり同じ値か比較する」という意味になります。
+          ざっくりなので、似ているモノ同士はtrueと判定します。
+          初心者本にはこの記法で書かれているものが多く、そのまま業務に突入する人もけっこういます。
+        </div>
+        <div>
+          この「似ているとみなす」のは言語仕様できっちり決まっているので、ここではっきりさせておきます。
+          まずは下記の例を見てください。
+          
+        </div>
+        <script title="二重イコール演算子による比較" type="code/Javascript">
+          console.log( "" == false ); // true
+          console.log( 0 == false ); // true
+          console.log( 0 == "" ); // true
+          console.log( null == 0 ); // false
+          
+          console.log( 1 == "1" ); // true
+          console.log( 1 == true ); // true
+          console.log( null == undefined ); // true
+        </script>
+        <div>空文字とfalse、ゼロはそれぞれ同じである、と判定されてしまいました。</div>
+        <div>数字1と文字列"1"は、同じでも良い気がしますが、数字1とbooleanのtrueが同じになっています。これは良くないですね。</div>
+      </section>
+      <section>
+        <h1>二重イコール演算子の比較結果</h1>
+        <div>
+          ではどんなときに「同じ」と判定されるのか、一覧にしてみました。
+          縦軸と横軸を比較した時の判定結果が下記の表です。
+          
+        </div>
+        <table>
+          <caption>falsyな値を二重イコール演算子で比較</caption>
+          <tr>
+            <th>&nbsp;</th>
+            <th>&quot;&quot;</th>
+            <th>0</th>
+            <th>false</th>
+            <th>null</th>
+            <th>undefined</th>
+            <th>NaN</th>
+          </tr>
+          <tr>
+            <th>&quot;&quot;</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>0</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>false</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>null</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>undefined</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>NaN</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+        </table>
+        <div>
+          一部、型が違っても同値として判定されているのがわかるでしょうか？
+          文字列、数字、booleanのfalsyな値はすべて「同じ」として判定されます。
+        </div>
+        <div>nullとundefinedはひとくくりに同じとされます。booeanや0、空文字列とは同じではありません。</div>
+        <div>NaNについては、NaN同士でもイコールになりません。<span>「</span><a href="./null-and-undefined.html">前節で解説</a><span>」</span>していますので、そちらを参照してください。
+        </div>
+        <div>次はtruthyな値を比較してみます。</div>
+        <table>
+          <caption>truthyな値を二重イコール演算子で比較</caption>
+          <tr>
+            <th>&nbsp;</th>
+            <th>&quot;1&quot;</th>
+            <th>1</th>
+            <th>true</th>
+            <th>&quot;3&quot;</th>
+            <th>3</th>
+            <th>&quot;-1&quot;</th>
+            <th>-1</th>
+          </tr>
+          <tr>
+            <th>&quot;1&quot;</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>1</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>true</th>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>&quot;3&quot;</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>3</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>&quot;-1&quot;</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+          </tr>
+          <tr>
+            <th>-1</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="true">true</td>
+          </tr>
+        </table>
+        <div>
+          1, "1", trueはそれぞれ「同じである」と判定されます。
+          0,1以外の値はboolean値と同じであると判定されることはありません。
+          
+        </div>
+        <div>
+          二重イコール演算子では数字と文字列を比較する場合は、そこそこ期待通りの動きをします。
+          ただ、空文字と0が同じと判定されるのを許容するので、未入力とゼロの場合わけを考えておかないと、あとで痛い目をみます。
+          
+        </div>
+      </section>
+      <section>
+        <h1>三重イコール演算子(===)</h1>
+        <div>
+          次は三重イコール演算子です。三重イコール演算子は、両者を厳密に比較します。
+          1と"1"の様に、似ているものであっても容赦なく違う！と判定します。
+          
+        </div>
+        <script title="三重イコール演算子による比較" type="code/Javascript">
+          console.log( "" === false ); // false
+          console.log( 0 === false ); // false
+          console.log( 0 === "" ); // false
+          console.log( null === 0 ); // false
+          
+          console.log( 1 === "1" ); // false
+          console.log( 1 === true ); // false
+          console.log( null === undefined ); // false
+          
+        </script>
+        <div>今度は全てが「同じではない」と判定されました。</div>
+        <div>三重演算子の比較結果を表にすると、下記のようになります。</div>
+      </section>
+      <section>
+        <table>
+          <caption>falsyな値を三重イコール演算子で比較</caption>
+          <tr>
+            <th>&nbsp;</th>
+            <th>&quot;&quot;</th>
+            <th>0</th>
+            <th>false</th>
+            <th>null</th>
+            <th>undefined</th>
+            <th>NaN</th>
+          </tr>
+          <tr>
+            <th>&quot;&quot;</th>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>0</th>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>false</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>null</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>undefined</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>NaN</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+        </table>
+      </section>
+      <section>
+        <table>
+          <caption>truthyな値を三重イコール演算子で比較</caption>
+          <tr>
+            <th>&nbsp;</th>
+            <th>&quot;1&quot;</th>
+            <th>1</th>
+            <th>true</th>
+            <th>&quot;3&quot;</th>
+            <th>3</th>
+            <th>&quot;-1&quot;</th>
+            <th>-1</th>
+          </tr>
+          <tr>
+            <th>&quot;1&quot;</th>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>1</th>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>true</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>&quot;3&quot;</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>3</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>&quot;-1&quot;</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+            <td class="false">false</td>
+          </tr>
+          <tr>
+            <th>-1</th>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="false">false</td>
+            <td class="true">true</td>
+          </tr>
+        </table>
+        <div>
+          booleanとNumber、Stringなどの型はもちろん、nullとundefinedもきっちり判定されます。
+          でもNaN同士はやっぱりイコールになりません。
+        </div>
+        <div>NaNについては<span>「</span><a href="./null-and-undefined.html">nullとundefind, NaN</a><span>」</span>をどうぞ。
+        </div>
+      </section>
+      <section>
+        <h1>"=="と"==="の使い分け</h1>
+        <div>"=="と"==="は使い分けるべきなのか、"==="のみを採用すべきなのか？</div>
+        <div>
+          "=="は昔からよくバグの原因になってきました。理想を言えば"==="のみにすると固いプログラムができます。
+          とはいえ、二重イコール演算子にはnullとunefinedをいっぺんに判定してくれる便利さもあります。
+          nullかundefindの判定だったら<code>value == null</code>の二重イコール演算子で十分でしょう。
+          
+        </div>
+        <div>両方の特性を考えて、正しい選択ができるようになってください。</div>
+      </section>
+      <section>
+        <h1>まとめ</h1>
+        <ul>
+          <li>"=="の判定はざっくり -> falsyな値の比較に気をつける</li>
+          <li>"==="は厳密に比較</li>
+          <li>NaNだけ特殊なので覚えておく</li>
+        </ul>
+      </section>
+      <footer>
+        <hr>
+        <div class="writer">
+          <!-- div.title 書いた人-->
+          <div class="person">
+            <!-- 表示情報-->
+            <div class="name">日帰りキャンパー</div>
+            <!-- 経歴とか-->
+            <div class="description">
+              2012年7月入社。猫派。<br>
+              マイブームはJavascript, TypeScript, CSS3, HTML5。
+            </div>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="flex-center"><a href="/" class="btn">HOME</a></div>
+        <div class="space"></div>
+      </footer>
+    </article>
+    <script src="/js/_lib.min.js"></script>
+    <script>CodeHighlight.execute();</script>
+  </body>
+</html>
