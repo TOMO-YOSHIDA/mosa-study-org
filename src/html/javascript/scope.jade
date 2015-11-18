@@ -3,7 +3,7 @@ extends ../template.jade
 
 // 記事のタイトルをココに
 block title
-	title Javascript: 変数のスコープ
+	title 変数のスコープ
 
 // 記事本文
 block contents
@@ -12,10 +12,7 @@ block contents
 	section
 		h1 変数スコープを知る
 
-		div.
-
-
-
+		div
 
 
 		script(title="変数のスコープは関数内",type="code/Javascript").
@@ -47,17 +44,39 @@ block contents
 		script(title="varなしの場合はグローバル変数になる",type="code/Javascript").
 
 			function A(){
-				a = "A";
+				a = "A"; //グローバル変数になる
 			}
 
 			function B(){
-				console.log(a); // aが見える！
+				// B関数内では宣言していないけどグローバル変数aが見える！
+				console.log(a); // -> A
 				a = "not A";
 			}
 
 			function C(){
-				console.log(a);
+				// ここではグローバル変数のaを参照する
+				console.log('c: "%s"', a); // -> c: "undefined"
+
+				// ローカル変数を宣言する
+				var a = 'a on c';
+				console.log('c: local a = "%s"', a); // -> c: local a = "a on c"
+
+				// 修飾子なしでaを変更しても、グローバル変数ではない
+				a = 'local a';
+				console.log('c: window.a = "%s"', window.a); // -> c: window.a = "not A"
 			}
+
+			A();
+			B();
+			C();
+
+			// Aで宣言した変数がグローバルのため、B関数の中でaが書き換えられている
+			console.log('a = "%s"', a); // -> a = "not A"
+
+		div.
+			いくら<code>var</code>をつけたとしても、関数外ではグローバル変数になります。
+			
+
 
 
 	section

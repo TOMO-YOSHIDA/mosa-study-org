@@ -1,0 +1,173 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Deferred, Promise
+
+// 記事本文
+block contents
+	h1 Deferred, Promise
+	div 現場でもよく使われる、Javascriptでの非同期実行について解説します。
+	div.
+		ここではjQueryのDeferredによる解説です。
+		どうでもいいですが<code>Deferred</code>を<code>Deffered</code>とよく間違えます。
+
+	div 簡単に流れを説明すると
+	ol
+		li Deferredを作成する
+		li Deferredからpromiseを返す
+		li promiseに次に実行したい関数を登録する
+		li Deferredの状態を更新する
+		li 状態によってdone or failのどちらかが実行される
+
+	section
+		h1 下準備
+		div.
+			このページでは下記のスクリプトがロード済みです。
+
+		script(title="Deferred",type="code/Javascript").
+			// １秒後にresolveする関数
+			var delayResolve = function(){
+				var d = new $.Deferred();
+				setTimeout(function(){
+					d.resolve('resolve');
+				}, 1000);
+				console.log('delayResolve:START');
+				return d.promise();
+			};
+
+			// １秒後にrejectする関数
+			var delayReject = function(){
+				var d = new $.Deferred();
+				setTimeout(function(){
+					d.reject('reject');
+				}, 1000); // 遅延実行
+				console.log('delayReject.START');
+				return d.promise();
+			};
+
+			// resolve, rejectを受け取る関数を作る関数
+			var callback = function(id){
+				return function(arg){
+					var d = new $.Deferred();
+					setTimeout(function(){
+						d[arg](arg);
+					}, late);
+					console.log('callback(%d):%s',id, arg);
+					return d.promise();
+				};
+			};
+
+	section
+		h1 resolve
+		div
+		script(title="resolveの例",type="code/Javascript").
+			delayResolve().done(callback(1)); // 1秒後に -> callback(1):resolve
+			delayResolve().fail(callback(2)); // 実行されない
+
+
+	section
+		h1 reject
+		div
+		script(title="rejectの例",type="code/Javascript").
+			delayReject().done(callback(1)); // 実行されない
+			delayReject().fail(callback(2)); // 1秒後に -> callback(2):reject
+
+	section
+		h1 then
+		div
+		script(title="thenの例",type="code/Javascript").
+			delayResolve().then(callback(1), callback(2)); // 1秒後に -> callback(1):resolve
+			delayReject().then(callback(3), callback(4)); // 1秒後に -> callback(4):reject
+
+	section
+		h1 resolve,rejectのchain
+		div
+
+		script(title="done, failの動作確認",type="code/Javascript").
+			//resolveで２つの関数が同時にコールされる
+			delayResolve()
+				.done(callback(1)) // callback(1):resolve
+				.fail(callback(2)) // 呼ばれない
+				.done(callback(3)); // callback(3):resolve
+
+			// rejectで２つの関数が同時にコールされる
+			delayReject()
+				.done(callback(1)) // 呼ばれない
+				.fail(callback(2)) // callback(2):reject
+				.fail(callback(3)); // callback(3):reject
+
+
+	section
+		h1 thenのchain
+		div
+		script(title="thenの動作確認",type="code/Javascript").
+			// resolveで1秒おきに３つの関数が順番にコールされる
+			delayResolve()
+				.then(callback(1)) // callback(1):resolve
+				.then(callback(2)) // callback(2):resolve
+				.then(callback(3)); // callback(3):resolve
+
+			// rejectで1秒おきに３つの関数が順番にコールされる
+			delayReject()
+				.then(callback(1), callback(2)) // callback(2):reject
+				.then(callback(3), callback(4)) // callback(4):reject
+				.then(callback(5), callback(6)); // callback(6):reject
+
+	section
+		h1 $.when
+		div <code>$.when()</code>はpromiseオブジェクトを並列で待ちます。
+
+		script(title="whenの動作確認",type="code/Javascript").
+			// whenによるパラレル実行
+			$.when(delayResolve(),delayResolve(),delayResolve())
+				.done(callback(1)) // callback(1):resolve
+				.fail(callback(2));
+
+			// whenによるパラレル実行(rejectあり)
+			$.when(delayResolve(),delayReject(),delayResolve())
+				.done(callback(1))
+				.fail(callback(2)); // callback(2):reject
+
+		div.
+			<code>$.when()</code>の中でどれか１つでもrejectされた場合、即座にfailが実行されます。
+			rejectがあっても全てを待って処理を進めたい場合、<code>then()</code>で待ち受ければすべての状態が更新されるまで待ちます。
+
+	// jQueryのロード
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
+
+	+exlink('爆速でわかるjQuery.Deferred超入門', 'http://techblog.yahoo.co.jp/programming/jquery-deferred/')
+
+	// 実験用
+	script.
+		+function(g){
+			var late = 1000;
+
+			g.delayResolve = function(arg){
+				var d = new $.Deferred();
+				setTimeout(function(){d.resolve('resolve')}, late);
+				console.log('delayResolve:START:' + arg);
+				return d.promise();
+			};
+
+			g.delayReject = function(arg){
+				var d = new $.Deferred();
+				setTimeout(function(){d.reject('reject')}, late);
+				console.log('delayReject.START:' + arg);
+				return d.promise();
+			};
+
+			g.callback = function(id){
+				return function(arg){
+					var d = new $.Deferred();
+					setTimeout(function(){d[arg](arg)}, late);
+					console.log('callback(%d):%s',id, arg);
+					return d.promise();
+				};
+			};
+		}(this);
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
