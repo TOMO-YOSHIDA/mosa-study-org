@@ -1,6 +1,7 @@
 @base-color:rgb(0,92,151);
 @base-color-throu:rgba(0,92,151, 0.2);
 @shadow: 1px 1px 2px #999;
+
 html{
 	width:100%;
 	height:100%;
@@ -197,6 +198,7 @@ a {
 ```
 */
 div.writer{
+	display:none;
 	margin-top:2em;
 	font-weight:bold;
 
@@ -226,7 +228,7 @@ li {
 	margin-left:1.5em;
 }
 
-code {
+section > div > code {
 	font-family:"meiryo";
 	font-size:1em;
 	display:inline-block;
@@ -267,4 +269,70 @@ table {
 	}
 }
 
+// 強調表示
+.important {
+	font-weight:bold;
+}
 
+// 作成中
+.making:after {
+	content:"作成中";
+	background:#179C55;
+	color:white;
+	border-radius: 0.4em;
+	padding:0 0.4em;
+	margin-left:0.4em;
+	font-weight:normal;
+}
+
+// 検証中
+.inspection:after {
+	content: "検証中";
+	background:#F1F918;
+	color:#F90000;
+	border-radius: 0.4em;
+	padding:0 0.4em;
+	margin-left:0.4em;
+	font-weight:bold;
+}
+
+// デッドリンク
+.deadlink:after {
+	content: "未作成";
+	background:#7B7B7B;
+	color:white;
+	border-radius: 0.4em;
+	padding:0 0.4em;
+	margin-left:0.4em;
+	font-weight:normal;
+}
+
+// 取り消し線
+.strike {
+	text-decoration: line-through;
+}
+
+// スター
+.stars {
+	margin-left:0.5em;
+	color:yellow;
+	text-shadow:1px 1px 1px #000;
+}
+
+.exlink {
+	margin-bottom:0;
+}
+
+// dl
+dl {
+	margin-left:0;
+	dt {
+		font-size:1.5em;
+		font-weight:bold;
+		margin-top:1.3em;
+	}
+	dd {
+		margin-top:0.5em;
+		margin-left:0;
+	}
+}

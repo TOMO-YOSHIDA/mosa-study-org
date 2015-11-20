@@ -18,8 +18,8 @@ block contents
 		li Deferredを作成する
 		li Deferredからpromiseを返す
 		li promiseに次に実行したい関数を登録する
-		li Deferredの状態を更新する
-		li 状態によってdone or failのどちらかが実行される
+		li resolveかrejectで状態を更新する
+		li 状態変更によってdone or failのどちらかが実行される
 
 	section
 		h1 下準備
@@ -27,22 +27,22 @@ block contents
 			このページでは下記のスクリプトがロード済みです。
 
 		script(title="Deferred",type="code/Javascript").
-			// １秒後にresolveする関数
+			// １.5秒後にresolveする関数
 			var delayResolve = function(){
 				var d = new $.Deferred();
 				setTimeout(function(){
 					d.resolve('resolve');
-				}, 1000);
+				}, 1500);
 				console.log('delayResolve:START');
 				return d.promise();
 			};
 
-			// １秒後にrejectする関数
+			// 0.7秒後にrejectする関数
 			var delayReject = function(){
 				var d = new $.Deferred();
 				setTimeout(function(){
 					d.reject('reject');
-				}, 1000); // 遅延実行
+				}, 700); // 遅延実行
 				console.log('delayReject.START');
 				return d.promise();
 			};
@@ -53,7 +53,7 @@ block contents
 					var d = new $.Deferred();
 					setTimeout(function(){
 						d[arg](arg);
-					}, late);
+					}, 1000);
 					console.log('callback(%d):%s',id, arg);
 					return d.promise();
 				};
@@ -117,22 +117,29 @@ block contents
 
 	section
 		h1 $.when
-		div <code>$.when()</code>はpromiseオブジェクトを並列で待ちます。
+		div <code>$.when()</code>はpromiseオブジェクトを並列実行します。
 
-		script(title="whenの動作確認",type="code/Javascript").
-			// whenによるパラレル実行
+		script(title="when-done,failの動作確認",type="code/Javascript").
+			// when-doneによるパラレル実行
 			$.when(delayResolve(),delayResolve(),delayResolve())
 				.done(callback(1)) // callback(1):resolve
 				.fail(callback(2));
 
-			// whenによるパラレル実行(rejectあり)
+			// when-failによるパラレル実行(rejectあり)
 			$.when(delayResolve(),delayReject(),delayResolve())
 				.done(callback(1))
 				.fail(callback(2)); // callback(2):reject
+		div doneの場合、when内に登録したpromise全てがresolveを返さないと実行されません。
+		div failの場合、どれか一つでもrejectされたら他の結果を待たずに即実行されます。
 
+		script(title="when-thenの動作確認",type="code/Javascript").
+			// when.thenによるパラレル実行(rejectあり、全部の終了を待つ)
+			$.when(delayResolve(),delayReject(),delayResolve())
+				.then(callback(1),callback(2)); // callback(2):reject
 		div.
-			<code>$.when()</code>の中でどれか１つでもrejectされた場合、即座にfailが実行されます。
-			rejectがあっても全てを待って処理を進めたい場合、<code>then()</code>で待ち受ければすべての状態が更新されるまで待ちます。
+			thenの場合も、どれか一つでもrejectされたら即座に実行されます。
+			全ての関数処理が終わってから整合性をとりたい時などは別の方法を考えなくてはいけません。-> 課題
+
 
 	// jQueryのロード
 	script(src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js")
@@ -142,18 +149,22 @@ block contents
 	// 実験用
 	script.
 		+function(g){
-			var late = 1000;
-
 			g.delayResolve = function(arg){
 				var d = new $.Deferred();
-				setTimeout(function(){d.resolve('resolve')}, late);
+				setTimeout(function(){
+					console.log('delayResolve.END');
+					d.resolve('resolve');
+				}, 1500);
 				console.log('delayResolve:START:' + arg);
 				return d.promise();
 			};
 
 			g.delayReject = function(arg){
 				var d = new $.Deferred();
-				setTimeout(function(){d.reject('reject')}, late);
+				setTimeout(function(){
+					console.log('delayReject.END');
+					d.reject('reject')
+				}, 800);
 				console.log('delayReject.START:' + arg);
 				return d.promise();
 			};
@@ -161,7 +172,10 @@ block contents
 			g.callback = function(id){
 				return function(arg){
 					var d = new $.Deferred();
-					setTimeout(function(){d[arg](arg)}, late);
+					setTimeout(function(){
+						console.log('callback.END');
+						d[arg](arg);
+					}, 1000);
 					console.log('callback(%d):%s',id, arg);
 					return d.promise();
 				};

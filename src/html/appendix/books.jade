@@ -1,0 +1,61 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title 参考文献リスト
+
+// 記事本文
+block contents
+	h1 参考文献リスト
+	div ご参考まで。
+	section
+		h1 Javascript
+
+		dl
+			dt
+				+booklink('JavaScript Ninjaの極意','http://goo.gl/njBjkc', 5)
+			dd.
+				サブタイトルは『ライブラリ開発のための知識とコーディング』。
+				jQueryの作者ジョン・レシグ氏による本。
+				Javascript忍者になるための技の数々が、とてもわかりやすく解説されています。
+				関数、プロトタイプ、正規表現に多くの章が割かれており、ものすごく勉強になります。
+				脱初心者にとりあえず一冊なら、これがオススメ。
+
+			dt
+				+booklink('JavaScript 第6版','http://goo.gl/tIV4uz', 4)
+			dd
+				| Javascriptといえばの、定番のサイ本。
+				| 840ページの厚みでひたすらJavascriptを解説。
+				| これでも原著を収録しきれず、『
+				+booklink('JavaScriptリファレンス 第6版','http://goo.gl/hUddF9')
+				| 』(392ページ)に分かれています。
+				| 知識補強のためにあってもいいかな。
+				| 内容も質量も重たいので電子書籍版をオススメします。
+
+			dt
+				+booklink('Effective JavaScript','http://goo.gl/hyur5h', 3)
+			dd.
+				サブタイトルは『JavaScriptを使うときに知っておきたい68の冴えたやり方』。
+				『JavaScript Ninjaの極意』と内容がかぶります。
+				文体がつまらないので眠くなります。
+
+			dt
+				+booklink('JavaScript: The Good Parts','http://goo.gl/pu0diI', 2)
+			dd.
+				サブタイトルは『「良いパーツ』によるベストプラクティス』。
+				アンチ派も多く出版も古いため、参考程度。
+	section
+		h1 参考サイト
+		div.
+			他、この勉強会資料の使用技術。
+			HTMLはJade, CSSはlessで書いたソースをgulpでビルドしています。
+			フルスクラッチで書いてminifyしてます。
+		+ exlink('CSS3のFlexboxを基本から理解して、使い倒そう！', 'http://liginc.co.jp/web/html-css/css/21024')
+		+ exlink('LESSで3倍ラクするスマートフォンコーディング', 'http://gihyo.jp/design/serial/01/less')
+		+ exlink('JADE', 'http://jade-lang.com/reference/code/')
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

@@ -1,0 +1,102 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title function:関数
+
+// 記事本文
+block contents
+	h1 function:関数
+	div.
+
+	section
+		h1 Javascriptにおけるfunction
+		div.
+			Javascriptに
+
+		ul
+			li 変数、配列の要素、オブジェクトのプロパティとして代入できる
+			li 関数は引数として関数を受け取れる
+			li 関数は戻り値として関数を返せる
+			li 関数にもプロパティを持てる
+
+		script(title="forとforEach",type="code/Javascript").
+
+
+	section
+		h1 コールバック関数の例
+		div.
+			Javascriptでは、配列のソートにArrays.sortがビルトインで用意されています。
+			ただ、この関数のソート順は「文字列比較」なので、数値順に並べたいという希望がかないません。
+
+		script(title="標準ソート関数は文字列順",type="code/Javascript").
+			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+			arr.sort(); // -> [10, 20, 30, 45, 64, 7, 78, 9, 90, 93]
+
+		div.
+			そこで自前の比較用関数をArrays.sortに渡します。
+
+		script(title="ソート用関数をコールバックに渡す",type="code/Javascript").
+			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+			// aとbに数字が渡る前提で、差を返す。
+			var compare = function(a,b){
+				return a - b;
+			};
+
+			// sortのコールバック関数として渡すと期待通りの結果が得られる
+			arr.sort(compare); // -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
+		ul
+			li 関数を変数compareとして宣言
+			li compare関数をArray.sort関数の引数として渡す
+		div の２つの特徴を確認できました。
+		div.
+			コールバックとして渡す場合、関数に"()"をつけないことに注意してください。
+			"()"をつけると、関数が即実行されます。
+			非同期実行させるためにコールバックを渡しているつもりで、実行結果を渡しているオマヌケコードは実務でも散見されます。
+
+	section
+		h1 無名関数
+		div.
+			関数には名前をつけることができますが、必須ではありません。
+			使い捨てなら定義だけで使えます。
+
+		script(title="ソート用関数を無名関数として渡す",type="code/Javascript").
+			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+
+			//使い捨てなら名前をつけるまでもない
+			arr.sort(function(a,b){return a - b});
+
+			// 結果 -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
+		div プロっぽい。
+
+	section
+		h1 関数の即実行
+		div.
+			関数を作り、即実行して捨てる。
+			変数を関数内で完結させられるのでグローバル変数を汚染しません。
+			動作検証の場合もこの形式にすることで、変数を残さないので再検証時に悪さしません。
+
+		script(title="関数の即実行",type="code/Javascript").
+			// 関数をカッコで囲う
+			(function(){console.log('1:OK!');})();
+
+			// 実行引数まで囲ってもOK
+			(function(){console.log('2:OK!');}());
+
+			// 関数をカッコで囲わないと構文エラー
+			function(){console.log('3:NG!');}();
+			// -> Uncaught SyntaxError: Unexpected token ((…)
+
+		div この形式では関数全体を"()"で囲う必要がありますが、ショートハンドもあります。
+
+		script(title="関数の即実行のショートハンド",type="code/Javascript").
+			!function(){console.log('OK!');}();
+
+		div.
+			"!"をつけることで、関数の返り値をboolean反転します。
+			他に"+"や"-"なども使えます。
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

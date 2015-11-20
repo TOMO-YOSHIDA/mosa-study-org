@@ -1,0 +1,160 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title forとforEach
+
+// 記事本文
+block contents
+	h1 forとforEach
+	div.
+		イテレータを順次処理するなら、forよりforEachの方が速くて確実です。
+		関数を渡すという概念が理解できていれば簡単です。
+
+	section
+		h1 forとforEachの書き方
+		div.
+			下記は配列の内容を出力する処理をforとforEachで書いているものです。
+			結果は同じです。
+
+		script(title="forとforEach",type="code/Javascript").
+			var array = [1,2,3,4,5];
+
+			// 配列の全要素をログ出力
+			for(var i = 0; i < array.length; i++) {
+				console.log(array[i]);
+			}
+
+			// forEachで書く
+			array.forEach(function(v){
+				console.log(v);
+			});
+
+		div.
+			forでは配列の値にアクセスするために配列本体とインデックスiが必要になります。
+			また、iというカウンタを用意してコントロールする必要があります。
+
+		div forEachでは、関数に直接要素が渡されるのでカウンタをコントロールする必要はありません。
+
+	section
+		h1 forEachで配列をコントロール
+		div アクセスしている要素のインデックスや配列本体が欲しければ、第２引数と第３引数として渡してもらえます。
+
+		script(title="forEachによる配列操作",type="code/Javascript").
+			var array = [1,2,3,4,5];
+			array.forEach(function(v, i, arr){
+				arr[i] = v * 10; // 要素を10倍して再格納
+			});
+
+			console.log(array); // -> [10, 20, 30, 40, 50]
+
+
+	section
+		h1 forEachは存在しない要素は無視する
+		div.
+			注意する点がひとつ。
+			forEachは初期化されていない配列の要素は処理しません。
+
+		script(title="forEachはundefined要素を無視する",type="code/Javascript").
+			// インデックスなしの、長さ10の配列を作成
+			var array = new Array(10);
+			array.forEach(function(v){console.log('noindex:%s', v);});
+			// -> なにも表示されない。。。
+
+			// 明示的にインデックス3にundefinedを入れてみる
+			array[3] = undefined;
+			array.forEach(function(v, i){console.log('array[%d] = %s', i, v);});
+			// -> array[3] = undefined
+
+			// undefinedを含め、falsyな値を入れてみる
+			array = ["", false, 0, null, NaN, undefined, "END"];
+			array.forEach(function(v){console.log('value = %s',v);});
+			// -> すべての要素が表示される
+
+		div.
+			これがどんなときに問題になるかというと、空の配列を作って要素を初期化しようとすると空振りします。
+
+		script(title="forEachはundefined要素を無視する",type="code/Javascript").
+			var array = new Array(5);
+
+			// forEachで配列を初期化したいが、undefinedのまま。
+			array.forEach(function(v,i){
+				array[i] = null;
+			});
+			console.log(array); // -> []
+
+			// forで初期化すると成功
+			for(var i = array.length; i--;) {
+				array[i] = null;
+			}
+			console.log(array); // -> [null, null, null, null, null]
+
+	section
+		script(title="値を代入する処理を計測する",type="code/Javascript").
+			var loops = 10 * 1000 * 1000;
+			var arr = new Array(loops);
+			+function(){
+				// よくある書き方。一番遅い。
+				console.time('for1');
+				for(var i = 0; i < arr.length; i++) arr[i] = 'for1';
+				console.timeEnd('for1'); // for1: 4447.444ms
+				console.log('for1 %s', arr[1000]);
+
+				// arr.lengthへのアクセスを１度にする。forの中では一番早い。
+				console.time('for2');
+				for(var i = 0, len = arr.length; i < len; i++) arr[i] = 'for2';
+				console.timeEnd('for2'); // for2: 2313.047ms
+				console.log('for %s', arr[1000]);
+
+				// arr.lengthへのアクセスを１度にする。一番早いことを期待していたが惜敗。
+				console.time('for3');
+				for(var i = arr.length; i--;) arr[i] = 'for3';
+				console.timeEnd('for3'); // for3: 2442.041ms
+				console.log('for3 %s', arr[1000]);
+
+				// forEachの計測。一番早い。
+				console.time('forEach');
+				arr.forEach(function(v, i, a){
+					a[i] = 'forE';
+				});
+				console.timeEnd('forEach'); // forEach: 859.486ms
+				console.log('forEach %s', arr[1000]);
+			}();
+		div 変数をグローバルに置いた場合、forEachが２倍以上のぶっちぎりで最速です。
+		div しかし、関数の中に変数arrを移動してみると？
+
+		script(title="値を代入する処理を計測する",type="code/Javascript").
+			+function(){
+				var loops = 10 * 1000 * 1000;
+				var arr = new Array(loops);
+				// 〜 処理は同じなので中略 〜
+				// for1: 344.226ms
+				// for2: 106.766ms 最速！
+				// for3: 181.435ms
+				// forEach: 1036.268ms
+			}
+
+		div.
+			なんと、forの方が圧倒的に高速です！
+			実際にはグローバル変数は定義せず、関数内に置くことが多いでしょう。
+		div.inspection.
+			forでカウンタ回すよりforEach使おうぜ！って締めようと思ってたのに。
+			残念なことに、だまってfor文を使うほうが速そうです。
+			計測って大事ですね。
+
+	section
+		h1 まとめ
+		ul
+			li
+				span.strike forよりはforEachを使う
+				span.inspection
+			li ループの途中で処理を中断する場合はforまたはwhileを使用する
+			li 関数内で完結する場合はforの方が速い
+
+	section
+		+exlink('MDN:Array.prototype.forEach()', 'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach')
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

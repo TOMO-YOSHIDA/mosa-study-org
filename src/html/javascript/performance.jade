@@ -14,9 +14,10 @@ block contents
 		div.
 			そんな時、どこの処理が足を引っ張っているのかを特定する必要があります。
 			chromeを使っているなら、devtoolのprofilesから詳細を見られます。
-		div お手軽なのは、chromeのdevtoolから<code>console.time</code>と<code>console.timeEnd</code>を使用する方法。<br>
-		div <code>time</code>と<code>timeEnd</code>に同じ文字列を渡すと、かかった時間をミリ秒単位で表示してくれます。<br>
-		div プログラムに書いておけば、実行時に毎回計測してくれます。
+		div.
+			 お手軽なのは、chromeのdevtoolから<code>console.time</code>と<code>console.timeEnd</code>を使用する方法。
+			<code>time</code>と<code>timeEnd</code>に同じ文字列を渡すと、かかった時間をミリ秒単位で表示してくれます。
+			プログラムに書いておけば、実行時に毎回計測してくれます。
 
 		script(title="chromeで処理時間を計測する",type="code/Javascript").
 

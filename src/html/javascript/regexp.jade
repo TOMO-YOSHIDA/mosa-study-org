@@ -1,0 +1,151 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title 正規表現
+
+// 記事本文
+block contents
+	h1 正規表現
+	div.
+		使いこなせば超絶便利。そしてなんかプロっぽい。
+		forやwhileを駆使しても同じことができますが、正規表現の方がシンプルでエレガントなコードが書けます。
+
+	section
+		h1 正規表現リテラルと正規表現オブジェクト
+		div.
+			正規表現にはリテラル表記とオブジェクト作成の２通りがあります。
+			文字列リテラル=文字列をダブルクォートで定義する定数、文字列オブジェクト=動的に作成する文字列と同様のイメージです。
+		ul
+			li 文字リテラルはコンパイル時に確定している不変の正規表現
+			li 正規表現オブジェクトは処理中に動的に決定される正規表現
+
+		script(title="正規表現の定義方法",type="code/Javascript").
+			var a = /abc/;
+			var b = new RegExp('abc');
+
+			console.log('test a:%s', a.test('abc')); // -> true
+			console.log('test b:%s', b.test('abc')); // -> true
+			console.log('a == b? %s', a.toString() === b.toString()); // a == b? true
+
+			// aとbの定義は一緒だが同一オブジェクトではない
+			console.log('a is b? %s', a == b); // a is b? false
+
+
+		script(title="エスケープ文字を扱う場合",type="code/Javascript").
+			// 数字４桁を表す正規表現
+			var a = /\d{4}/;
+			var b = new RegExp('\\d{4}');
+
+			console.log('test a:%s', a.test('1234')); // -> true
+			console.log('test b:%s', b.test('1234')); // -> true
+			console.log('a == b? %s', a.toString() === b.toString()); // a == b? true
+
+		div.
+			正規表現オブジェクトを作成する場合、バックスラッシュ(\)はエスケープする必要があるので読みにくくなります。
+
+	section
+		h1 正規表現による値のチェック
+		script(title="値のチェック",type="code/Javascript").
+			// "^"と"$"で完全一致にするのがポイント
+			var values = /^(9999|2222|1234)$/;
+
+			console.log('has value? -> %s',values.test('1234')); // -> true
+			console.log('has value? -> %s',values.test('12345')); // -> false
+
+			// "^"と"$"なしの場合、部分一致でOKになる
+			var values = /9999|2222|1234/;
+			console.log('has value? -> %s',values.test('12345')); // -> true
+
+	section
+		h1 正規表現による文字列置換
+		script(title="値の変換",type="code/Javascript").
+
+			var regex1 = /A/;
+			var regex2 = /A/g; // gオプションを追加
+
+			var str = "AoAoAoAoA";
+
+			// 最初にマッチした文字だけ変換される
+			console.log(str.replace(regex1, 'a')); // -> aoAoAoAoA
+
+			// マッチを探し続けて変換する
+			console.log(str.replace(regex2, 'a')); // -> aoaoaoaoa
+
+	section
+		h1 正規表現とキャプチャ
+		script(title="値のキャプチャ",type="code/Javascript").
+			// かっこで数字を３桁、４桁、４桁に区切ってキャプチャする
+			var regex = /^(\d{3})(\d{4})(\d{4})$/;
+			var str = '09011112222';
+
+			// キャプチャ文字を"-"で区切って変換する
+			console.log(str.replace(regex, '$1-$2-$3')); // -> 090-1111-2222
+		div
+			ul
+				li カッコで文字をキャプチャし、"\1"で再利用する
+
+
+		script(title="値のキャプチャと変換",type="code/Javascript").
+			var regex = /<(\w+?).*>(.*)<\/\1>/g;
+			var str = '<span>span text</span> and <div>div text</div>';
+			console.log(str.replace(regex, '($1)[$2]'));
+			// -> (span)[span text] and (div)[div text]
+
+		div
+		ul
+			li "\w"は"英数字とアンダースコアをあらわす[0-9a-zA-Z_]と同義
+			li カッコで文字をキャプチャし、"\1"で再利用する
+
+	section
+		div 正規表現はsakuraエディタなどでも使えるので覚えておくと便利です。
+
+	section
+		h1 おまけのスピード計測
+		div.
+			当たり前だけど、出来る限りリテラルで定義するとよさげ。9倍くらい速い。
+			一度<code>new RegExp(source)</code>で作成して使い回すなら同じ。
+		script(title="リテラルとオブジェクトのスピード対決",type="code/Javascript").
+			+function(){
+				// リテラル定義
+				function literal(v){
+					/abc/.test(v);
+				}
+
+				// オブジェクト作成
+				function obj(v){
+					new RegExp('abc').test(v);
+				}
+
+				var loopCount = 1000 * 1000;
+				var args = ['abc', 'xyz', 123, true];
+
+				console.time('リテラル');
+				for(var i = loopCount; i--;)
+					args.forEach(function(v){literal(v)});
+				console.timeEnd('リテラル'); // -> リテラル: 506.016ms
+
+				console.time('オブジェクト');
+				for(var i = loopCount; i--;)
+					args.forEach(function(v){obj(v)});
+				console.timeEnd('オブジェクト'); // -> オブジェクト: 4651.661ms
+
+				// オブジェクト作成
+				var r = new RegExp('abc');
+				function obj2(v){
+					r.test(v);
+				}
+				console.time('オブジェクト');
+				for(var i = loopCount; i--;)
+					args.forEach(function(v){obj2(v)});
+				console.timeEnd('オブジェクト'); // -> オブジェクト: 469.189ms
+
+			}()
+
+	section
+		+exlink('MDN:正規表現', 'https://developer.mozilla.org/ja/docs/Web/JavaScript/Guide/Regular_Expressions')
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

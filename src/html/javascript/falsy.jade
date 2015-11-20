@@ -46,6 +46,10 @@ block contents
 			つまり、6つのfalsyを覚えるだけで良いことになります。
 			ここだけ忘れないように。
 
+		div.
+			ほんとは<code>-0</code>っていう第７のfalsyな値がありますが、0とほぼ同じ扱いになるので今回は省略。
+			<code>0 === -0</code>はtrueだし、<code>String(-0)</code>は"0"です。
+
 		script(title="falsyな値のチェック", type="code/Javascript").
 			// 配列の中には全7種類のfalsyな値が格納されている
 			var falsy = [0, "", false, null, undefined, NaN, document.all];
@@ -55,16 +59,16 @@ block contents
 				if(!v) console.log(v + " is falsy!");
 			});
 
-		span.
-			ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。<br>
-			nullとundefinedの違いについては
-		span
+		div.
+			| ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。
+			| nullとundefinedの違いについては
 			+pagelink('nullとundefined, NaN', 'null-and-undefined')
-		span を参照してください。
+			| を参照してください。
 
 		div.
 			NaNはあまり馴染みがありませんが、数字に変換しようとして数字にならなかった場合に発生します。
 			例えば下記のように無茶なことをすると結果はNaNになります。
+
 		script(title="NaN" type="code/Javascript").
 			var c = "文字列で" / "割り算";
 			console.log(c); // -> NaN

@@ -12,7 +12,7 @@ block contents
 		h1 codehighlight.jsとは
 		div.
 			JavascriptやCSSのソースを、いい感じにハイライト表示してくれるJavascriptです。
-			すでに有名どころとして<code>Crayon Syntax Highlighter</code>や<code>highlight.js</code>がありますが、<code>&lt;</code>や<code>&gt;</code>はサニタイズする必要があり、そのまま貼り付けられないので面倒。
+			すでに有名どころとして<code>Syntax Highlighter</code>や<code>highlight.js</code>がありますが、<code>&lt;</code>や<code>&gt;</code>はサニタイズする必要があり、そのまま貼り付けられないので面倒。
 		div というわけで、簡単に作れるかな？と思い
 		ul
 			li 外部ライブラリを使用しない
@@ -35,18 +35,18 @@ block contents
 
 	section
 		h1 bower対応
-		div codehighlight.jsとこの勉強会資料とはプロジェクトを分けたので、いちいちファイルコピーしなくてもいいようにbowerに登録してみた。
+		div codehighlight.jsと勉強会資料とはプロジェクトを分けたので、いちいちファイルコピーしなくてもいいようにbowerに登録してみた。
 		div
 			code > bower install codehighlight.js
 
-		div.
-			でインストールできます。<br>
-			が、修正のたびにbowerにバージョン情報を登録するのが面倒になって、開発環境では結局シンボリックリンクにしてしまいました。
+		div でインストールできます。
+		div しかし、修正のたびにいちいち
+		ul
+			li bowerにバージョン情報を登録する
+			li githubにpush
+			li bower update
+		div の手順がかえって面倒になって、開発環境では結局シンボリックリンクにしてしまいました。
 
-		div バージョン情報は
-		div
-			code > bower info codehighlight.js
-		div で確認できます。
 	section
 		h1 作ってみて、感想
 		div.
@@ -59,7 +59,14 @@ block contents
 		h1 github公開中
 		div codehighlight.jsはgithubで公開しています。
 
+		div
+			| バージョン情報は
+			code > bower info codehighlight.js
+			| で確認できます。
+
 		+exlink('codehighlight.js(github)','https://github.com/TOMO-YOSHIDA/codehighlight.js')
+		+exlink('highlight.js', 'https://highlightjs.org/')
+		+exlink('SyntaxHighlighter', 'http://alexgorbatchev.com/SyntaxHighlighter/')
 
 // ライター情報
 block writer

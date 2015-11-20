@@ -1,0 +1,46 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title Javascriptの型
+
+// 記事本文
+block contents
+	h1 Javascriptの型
+
+	section
+		h1 string
+		div 文字列を表す。長さには特に制限はなく、メモリいっぱいまで使えるっぽい。
+
+	section
+		h1 number
+		div
+		ul
+			li いわゆる倍精度浮動小数点数(IEEE754標準の64ビット浮動小数点数形式)
+			li 範囲は±1.7976931348623157×10308です
+
+	section
+		h1 function
+		div
+		ul
+			li 関数にもプロパティを定義できる
+
+	section
+		h1 object
+		div
+
+		script(title="",type="code/Javascript").
+
+	section
+		h1 まとめ
+		ul
+			li string
+			li number
+			li function
+			li Object
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

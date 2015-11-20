@@ -5,12 +5,12 @@ include mixin
 html
 	head
 		title 勉強会資料
-		link(rel="stylesheet" href="/study.css")
+		link(rel="stylesheet" href="/mosa-study/study.css")
 	body
 		article
 			h1 勉強会資料
 
-			section
+			// section
 				h1 はじめに
 				div.
 					知っておくべきこと、パフォーマンス・チューニングの小技など。
@@ -19,29 +19,47 @@ html
 				div メインは「ずっと使える」知識を紹介します。
 
 			section
-				h1 Javascript 知識編
+				div 11/26の勉強会用。
+
+			section
+				h1 Javascriptの基礎知識
 				ol
 					li 基礎知識
 						ul
-							li.disabled javascriptの型
+							+index('JS学習のターゲットバージョン', 'javascript/js-target')
+							+indexing('Javascriptの型', 'javascript/type-of-js')
 							li.disabled 暗黙の型変換
 							+index('nullとundefind, NaN', 'javascript/null-and-undefined')
 							+index('値の比較「==」と「===」', 'javascript/equal')
 							+index('falsyな値', 'javascript/falsy')
+							li.disabled JSON
+							+indexing('forとforEach', 'javascript/for-and-forEach')
 
 					li ショートハンド(略記法)
 						ul
-							li.disabled 3項演算子
 							+index('ショートハンドとは', 'javascript/shorthand/shortHand')
 							+index('「||」の使い方', 'javascript/shorthand/or-join')
+							li.disabled 「&&」でifを省略
+							li.disabled !!とか~~とか!0とかvoid 0とか
+					li 関数
+						ul
+							+indexing('関数 Function', 'javascript/function/function')
+							+indexing('オブジェクトとして使う関数', 'javascript/function/function-object')
+							+deadlink('this', 'javascript/function/this')
+							+deadlink('プロトタイプ prototype', 'javascript/function/prototype')
+							+deadlink('クロージャ closure', 'javascript/function/closure')
+
 
 					li 中級編
 						ul
-							li.disabled Defferd, Promise
-							li.disabled 変数のスコープ
-							li.disabled this
+							li.disabled Javascriptはシングルスレッドである
+							+indexing('変数のスコープ', 'javascript/scope')
+
+							+indexing('Defferd, Promise', 'javascript/Deferred')
+							+indexing('正規表現', 'javascript/regexp')
 							li.disabled ArrayとObject
-			section
+
+			// section
 				h1 Javascript 実践編
 				ol
 					li 共通関数を作ってみる
@@ -49,17 +67,29 @@ html
 							+index('ストップウォッチ関数', 'javascript/stopwatch')
 							+index('数値判定(isNumeric)関数の作成', 'framework/function-isNumeric')
 
-					li 仕事で使えるテクニック
+					li 業務で使えるテクニック
 						ul
 							+index('パフォーマンス計測', 'javascript/performance')
-						// prototype
-						// Arrayを知る(push,pop,shift,unshift)
-						// 	Array.sort
-						// 	shuffleのprototype実装
-						// 正規表現
-						// 	正規表現リテラルとRegExp
-						// 	入力値のチェック RegExp.test
-						// 	前ゼロを除去する"0010" -> "10"
+							li.disabled undefinedとvoid 0
+							li.disabled prototype拡張
+							li.disabled Arrayを知る(push,pop,shift,unshift)
+							li.disabled 	Array.sort
+							li.disabled 	shuffleのprototype実装
+							li.disabled 正規表現
+							li.disabled 	正規表現リテラルとRegExp
+							li.disabled 	入力値のチェック RegExp.test
+							li.disabled 	前ゼロを除去する"0010" -> "10" / String(+"0010")
+			// section
+				h1 パフォーマンス編
+				ol
+					li パフォーマンス
+						ul
+							li.disabled forとforEach
+							li.disabled undefinedとvoid 0
+							li.disabled クロージャとメモリリーク
+
+
+
 			// section
 			// 	h1 CSS
 			//		ol
@@ -69,5 +99,6 @@ html
 			section
 				h1 appendix
 				ol
-					+index('style guide', 'style-guide/index')
+					// +index('style guide', 'style-guide/index')
 					+index('codehighlight.jsについて', 'appendix/codehighlight')
+					+index('参考文献', 'appendix/books')

@@ -1,0 +1,47 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title オブジェクトとして使う関数
+
+// 記事本文
+block contents
+	h1 オブジェクトとして使う関数
+	div.
+		関数は実体化して変数に入れ、操作することができます。
+
+	section
+		h1 Javascriptにおけるfunction
+		div.
+			関数は、実体化することができます。
+
+		script(title="forとforEach",type="code/Javascript").
+			// 内部にa, bという変数を持つ関数
+			function A(a,b){
+				this.a = a;
+				this.b = b;
+			}
+
+			// ２つの変数にそれぞれ実体化させる
+			var a1 = new A(1,2);
+			var a2 = new A(3,4);
+
+			// ２つの変数はそれぞれの値を持つ
+			console.log(a1); // A {a: 1, b: 2}
+			console.log(a2); // A {a: 3, b: 4}
+
+			// 変数は外部から参照できる
+			console.log(a1.a); // -> 1
+
+		div
+			| この例では、関数自体はインスタンスの外からも参照できる変数を保持するだけで、特に機能を持っているわけではありません。
+			| 変数のカプセル化については
+			+pagelink('クロージャ', './closure')
+			| で、メソッドについては
+			+pagelink('プロトタイプ', './prototype')
+			| で解説します。
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

@@ -16,10 +16,10 @@ block contents
 			| の理解が前提知識として必要です。まだの人はいったんそちらを修了してから見てください。
 
 		div.
-			JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。そもそもboolean同士でしかこの書き方はできません。
+			JavaやCなどでは、<code>b || c</code>の結果はbooleanなので、aはtrueかfalseが返るのでは？と思うかもしれません。
 
 		div.
-			これはJavascript特有の書き方で、bかcの、どちらかtruthyと判定されたほうがaに代入されます。
+			これはJavascript特有の書き方で、左から順番に評価し、truthyと最初に判定された結果が代入されます。
 			bとcの型は問いません。
 
 		script(title="「||」の構文",type="code/Javascript").
@@ -35,7 +35,10 @@ block contents
 			console.log(a || d || b || c); // -> "ABC"
 
 		div どういうこと？
-		div 「||」は、左から順番に変数を判定していきます。
+		div
+			| 「||」は、
+			span.important 左から順番に変数を判定
+			| していきます。
 		div 変数がfalseと判定されると、次の変数の評価に入り、それがtrueと判定されるまで繰り返します。
 		div 最後から2つ目までにtrueと判定されないと、最後の値がtrue/falseにかかわらず代入されます。
 

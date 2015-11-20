@@ -3,6 +3,16 @@ mixin index(title, url)
 	li
 		a(href=url+".html")= title
 
+//- index.jadeで使用するリンク(工事中)
+mixin indexing(title, url)
+	li
+		a(href=url+".html").making= title
+
+//- index.jadeで使用するリンク(未作成)
+mixin deadlink(title, url)
+	li
+		a(href=url+".html").deadlink= title
+
 //- 記事内で使用するリンク
 mixin pagelink(title, url)
 	span 「
@@ -19,5 +29,12 @@ mixin infolink(title, url)
 //- 外部リンクへ(新規タブが立ち上がる)
 mixin exlink(title, url)
 	div.exlink
-		| 参考(外部リンク)：
+		| 参考：
 		a(href=url target="_blank")= title
+
+//- 書籍タイトルとリンク
+mixin booklink(title, url, stars)
+	- if(typeof stars === 'number') stars = '★★★★★★★★★★'.substr(0,stars);
+	span.exlink
+		a(href=url target="_blank")= title
+		span.stars= stars

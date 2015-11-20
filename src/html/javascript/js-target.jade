@@ -1,0 +1,54 @@
+// 記事テンプレート
+extends ../template.jade
+
+// 記事のタイトルをココに
+block title
+	title JS学習のターゲットバージョン
+
+// 記事本文
+block contents
+	h1 JS学習のターゲットバージョン
+
+	// section
+		h1 Javascriptとは
+		div.
+			jQueryの父、ジョン・レシグの言葉を借りると『JavaとJavascriptはハムとハンバーガーくらい違う』です。
+			どちらもウマイが単語の一部が同じってだけという意味です。
+
+	section
+		h1 JSのバージョン
+
+		div.
+			JavascriptにはES3、ES5、ES6などいくつかバージョンが存在します。
+			最近ではalterJSといって、別言語で記述してJavascriptに変化する技術があります。
+			有名どころではCoffeeScript、TypeScript、Babelなど。
+		div.
+			JSの歴史についてはけっこう長くなるのではしょります。
+
+		div.
+			最近のブラウザは、モバイルを含めECMAScript Version 5(ES5)がだいたい使えます。
+			「今使えるJavascript」を考えて、最大公約数的にES5を基準にすすめます。
+
+	section
+		h1 最低限必要な知識
+		ul
+			li if, else, else if
+			li for, while
+			li switch,case,default
+			li 配列の概念
+
+	section
+		h1 学習の進め方
+		div.
+			chromeでページを開いたら、開発者ツールを開いて画面の左右に分けてください。
+			コンソールにソースをコピー＆ペーストしながら見ていくとわかりやすいと思います。
+
+	section
+		h1 動作確認ブラウザ
+		div.
+			動作確認はMacOSXのchromeで行っています。
+			表示の確認だけiPadとiPhone6も。
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida
