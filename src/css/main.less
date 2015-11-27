@@ -217,7 +217,7 @@ div.writer{
 		color:#339;
 	}
 	.pic {
-		align:right;
+		float:right;
 	}
 	.description{
 		color:#333;
@@ -236,6 +236,20 @@ section > div > code {
 	background:rgba(0,0,0,0.06);
 	padding:0 0.2em;
 	// margin:0 0.3em;
+}
+
+.flex {
+	display:flex;
+	flex-wrap: wrap;
+	text-align:left;
+	justify-content: flex-start;
+	div {
+		padding:0.4em 1em;
+	}
+}
+
+div.icon{
+	width: 12em;
 }
 
 
@@ -274,15 +288,21 @@ table {
 	font-weight:bold;
 }
 
-// 作成中
-.making:after {
-	content:"作成中";
-	background:#179C55;
-	color:white;
+// ラベル
+.deadlink:after,
+.inspection:after,
+.making:after
+{
 	border-radius: 0.4em;
 	padding:0 0.4em;
 	margin-left:0.4em;
 	font-weight:normal;
+}
+// 作成中
+.making:after {
+	content:"\270e 作成中";
+	background:#179C55;
+	color:white;
 }
 
 // 検証中
@@ -290,21 +310,14 @@ table {
 	content: "検証中";
 	background:#F1F918;
 	color:#F90000;
-	border-radius: 0.4em;
-	padding:0 0.4em;
-	margin-left:0.4em;
 	font-weight:bold;
 }
 
 // デッドリンク
 .deadlink:after {
-	content: "未作成";
+	content: "\2715 未作成";
 	background:#7B7B7B;
 	color:white;
-	border-radius: 0.4em;
-	padding:0 0.4em;
-	margin-left:0.4em;
-	font-weight:normal;
 }
 
 // 取り消し線
@@ -323,7 +336,7 @@ table {
 	margin-bottom:0;
 }
 
-// dl
+// 参考文献・dl
 dl {
 	margin-left:0;
 	dt {
@@ -335,4 +348,9 @@ dl {
 		margin-top:0.5em;
 		margin-left:0;
 	}
+}
+
+// ルビ
+rt, rp {
+	font-size:0.7em;
 }

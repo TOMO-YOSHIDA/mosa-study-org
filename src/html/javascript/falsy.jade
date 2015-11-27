@@ -8,7 +8,7 @@ block title
 block contents
 	h1 falsyな値
 	section
-		span.
+		div.
 			Javascriptではfalsyな値というのがとても重要です。
 			「falsyな値」とは、if文や三項演算子の条件としてfalseと判定される値のことです。
 			この後のショートハンドテクニックなどでも頻繁に出てきます。
@@ -59,7 +59,7 @@ block contents
 				if(!v) console.log(v + " is falsy!");
 			});
 
-		div.
+		div
 			| ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。
 			| nullとundefinedの違いについては
 			+pagelink('nullとundefined, NaN', 'null-and-undefined')

@@ -3,20 +3,105 @@ extends ../../template.jade
 
 // 記事のタイトルをココに
 block title
-	title プロトタイプ
+	title prototype
 
 // 記事本文
 block contents
-	h1 プロトタイプ
-	div まだ書いてません
+	h1 prototype
+	section
+		div.
+			prototypeは、関数の「設計図」です。
 
 	section
-		h1
+		h1 prototype
 		div.
+			まずは簡単な例を。
+			コンストラクタ関数を定義したあと、prototypeにプロパティをくっつけていきます。
 
+		script(title="簡単なprototypeサンプル",type="code/Javascript").
+			// 名前を保持するだけの関数
+			function Animal(name){
+				this.name = name
+			};
 
-		script(title="forとforEach",type="code/Javascript").
-		div
+			// 猫インスタンスを作成
+			var cat = new Animal('cat');
+			assert(cat.say === undefined, '猫はまだ話せない')
+
+			// prototypeにsayを追加(インスタンスに追加ではない)
+			Animal.prototype.say = function(){return "I'm " + this.name};
+
+			// 犬インスタンスを作成。話せる！
+			var dog = new Animal('dog');
+			assert(dog.say(), '犬は話せる');
+
+			// さっきまで話せなかった猫は？
+			assert(cat.say(), '猫も話せるようになった');
+
+		div.
+			これのなにが嬉しいの？って別に猫が話せるようになったのが嬉しい訳ではありません。
+			prototypeはインスタンスごとに作成されるわけではないのでメモリを消費しません。エコです。
+			prototypeに関数やプロパティを追加すると、それを使うインスタンス全てから参照できます。
+
+		div.
+			下記は悪い例です。
+			prototypeを使わずコンストラクタで関数を作って返しちゃうと、インスタンスごとに関数を持ってしまいます。
+
+		script(title="やっちゃいけない例",type="code/Javascript").
+			// コンストラクタで全てを定義する
+			function Animal(name) {
+				this.name = name;
+				this.say = function(){
+					return "I'm " + this.name;
+				};
+			}
+
+			// 話せるけどインスタンスごとにメソッドを作成してしまう
+			var cat = new Animal('cat');
+
+			assert(cat.say(), 'とりあえずは話せる');
+
+	section
+		h1 prorotype拡張
+		div.
+			prototypeを拡張すると、ビルトインの関数にも機能を追加することできます。
+		div.
+			例えば、String.trimは文字の両端のスペースを削除しますが、文字の右端のスペースと全角を削除する'rtrim'メソッドを追加してみます。
+
+		script(title="Stringを拡張する",type="code/Javascript").
+			String.prototype.rtrim = function(){
+				return this.replace(/(\s|　)*$/, '');
+			}
+
+			var s1 = 'テスト　　　'; // 右端に全角スペースがある
+			var s2 = 'テスト	 　'; // 右端にtab文字、半角スペース、全角スペースがある
+			var s3 = '  テスト  '; // 左端の半角スペース2個が削除されないことを確認する
+
+			assert(s1.rtrim() === 'テスト', '右端のスペースが削除された');
+			assert(s2.rtrim() === 'テスト', '右端のスペースが削除された');
+			assert(s3.rtrim() === '  テスト',
+								 '左端のスペースは残り、右端のスペースが削除された');
+
+		div.
+			prototype拡張を使うと、IE8以前のブラウザでString.trimを使えるようにしたり、Arrays.filterを使えるようにしたりできます。
+			プロっぽい。
+
+	section
+		h1 prorotype上書き
+		div.
+			String.trimも、それ自体を上書きできます。
+			全角スペースもtrimできるようにしてみましょう。
+
+		script(title="String.trimを上書きする",type="code/Javascript").
+			String.prototype.trim = function(){
+				return this.replace(/^(\s|　)*|(\s|　)*$/g, '');
+			}
+			assert('　　　あ　　　'.trim() === 'あ', '上書き成功!');
+
+		div.
+			強力ですがページ内の全てのString.trimに影響があるのでよく見極めてください。
+			上書きせずに、別名で拡張するのがいいかもしれません。
+
 
 // ライター情報
 block writer

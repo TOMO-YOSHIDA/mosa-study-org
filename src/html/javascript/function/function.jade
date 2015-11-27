@@ -13,7 +13,7 @@ block contents
 	section
 		h1 Javascriptにおけるfunction
 		div.
-			Javascriptに
+			Javascriptにおける関数には以下の様な特徴があります。
 
 		ul
 			li 変数、配列の要素、オブジェクトのプロパティとして代入できる
@@ -21,8 +21,24 @@ block contents
 			li 関数は戻り値として関数を返せる
 			li 関数にもプロパティを持てる
 
-		script(title="forとforEach",type="code/Javascript").
+	section
+		h1 関数の宣言
+		script(title="関数の宣言",type="code/Javascript").
+			// 名前付き関数
+			function funcA(){};
 
+			// 無名関数
+			function(){};
+
+			// 無名関数を変数に入れる
+			var funcB = function(){};
+
+		div 下記の構文で関数を宣言できます。
+		ul
+			li function宣言(必須)
+			li 関数の名前(任意)
+			li カッコつきの引数リスト(引数は0個以上、つまりなくても良い)
+			li ブレスで囲った関数本体(囲ってあれば空でも可)
 
 	section
 		h1 コールバック関数の例
@@ -96,6 +112,44 @@ block contents
 		div.
 			"!"をつけることで、関数の返り値をboolean反転します。
 			他に"+"や"-"なども使えます。
+
+	section
+		h1 引数の自由さがMAX
+		div.
+			Javascriptは関数を呼び出すとき、引数の数や型はまったく考慮しません。
+		script(title="関数の引数",type="code/Javascript").
+			// 引数を表示するだけの関数
+			var a = function(a,b){
+				console.log('a = "%s", b = "%s"', a, b);
+			}
+
+			a(); // -> a = "undefined", b = "undefined"
+			a('A'); // -> a = "A", b = "undefined"
+			a('A', 'B', 'C'); // -> a = "A", b = "B"
+		div.
+			渡されなければundefined、定義済み引数より多く渡されても気にしません。
+			undefinedだったらデフォルト値を入れるなどの対応が可能です。
+
+	section
+		h1 暗黙のオブジェクトarguments
+		div なんならまったく引数を関数側に宣言しなくても取得することができます。
+		script(title="関数の引数を適当に取得する",type="code/Javascript").
+			// 引数定義がなくてもargumentsから取得可能
+			var a = function(){
+				console.log('引数の数: %d, a = "%s",b = "%s"',
+					arguments.length,
+					arguments[0],
+					arguments[1]);
+			}
+			a(); // -> a = "undefined", b = "undefined"
+			a('A'); // -> a = "A", b = "undefined"
+			a('A', 'B', 'C'); // -> a = "A", b = "B"
+			// 引数の数: 0, a = "undefined",b = "undefined"
+			// 引数の数: 1, a = "A",b = "undefined"
+			// 引数の数: 3, a = "A",b = "B"
+		div.
+			関数にはすべての引数が<code>arguments</code>という暗黙のオブジェクトとして渡されます。
+			これを使えば引数が何個来ても対応できます。
 
 // ライター情報
 block writer

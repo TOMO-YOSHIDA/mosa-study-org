@@ -8,15 +8,87 @@ block title
 // 記事本文
 block contents
 	h1 クロージャ
-	div まだ書いてません
+	section
+		div まだ書いてません
 
 	section
-		h1
+		h1 簡単なクロージャ
 		div.
+			クロージャを簡単に説明すると、「その関数から参照できるスコープであれば、いつでも参照できる」ことです。
 
+		script(title="クロージャの例",type="code/Javascript").
+			function Counter(init){
+				var count = init; // 関数内でカウンタを定義
 
-		script(title="forとforEach",type="code/Javascript").
-		div
+				// カウントアップして返すメソッド
+				this.up = function(){
+					return ++count;
+				}
+			};
+
+			// prototypeからでもcountを参照可能？
+			Counter.prototype.increment = function(){
+				return ++this.count;
+			}
+
+			//
+			var a = new Counter(0);
+			var b = new Counter(4);
+
+			// 確認
+			assert(a.count === undefined, 'a.countは外側から見えない');
+			assert(a.up() === 1, 'カウンタは正常動作する');
+			assert(b.up() === 5, 'カウンタは正常動作する');
+
+			assert(a.increment(), 'prototypeからはcount変数が見えない！');
+		div.
+			ざっくり言うと、<code>A.up</code>がクロージャです。
+			変数countを関数の中に保持します。
+
+		div.
+			prototypeから見えないのはcountはthis.countではないからです。
+			Counter関数の中で定義された変数なので、この関数外からは参照できません。
+			prototypeから参照したいのなら<code>this.count = 0;</code>の様に書きますが、この場合は外部からも参照できます。
+
+		script(title="クロージャではない例",type="code/Javascript").
+			function ProtoCounter(init){
+				this.count = init; // thisで定義
+			}
+			ProtoCounter.prototype.up = function(){return ++this.count;};
+
+			var a = new ProtoCounter(0);
+			var b = new ProtoCounter(4);
+			assert(a.count === 0, 'a.countが見える');
+			assert(b.count === 4, 'a.countが見える');
+			assert(a.up() === 1, 'カウンタは正常動作する');
+			assert(b.up() === 5, 'カウンタは正常動作する');
+
+	section
+		h1 クロージャ活用例
+		div.
+			色んな所で使えるが、主に非同期で実行される関数に変数を使わせたい時に使われる。
+
+		script(title="クロージャの例",type="code/Javascript").
+			function getFunc(){
+				var count = 1;
+
+				return function Incrementer(){
+					assert(count++, '現在のカウンタを表示して1プラス');
+
+					// カウンタが5未満なら300msごとに繰り返し
+					if(count < 5) setTimeout(Incrementer, 300);
+				}
+			}
+
+			var f = getFunc(); // 関数から関数を受け取る
+			assert(this['count'] === undefined, 'var countは見えない');
+			assert(f.count === undefined, 'f.countは見えない');
+			f(); // 実行すると300msごとにカウントアップ
+
+		div.
+			<code>getFunc()</code>した時点で、外側からはcount変数が見えません。
+			変数fに代入されたIncrementer関数はクロージャとしてcountを保持し続けます。
+			これにより、タイマーで起動された時にずっとcount変数を参照できます。
 
 // ライター情報
 block writer

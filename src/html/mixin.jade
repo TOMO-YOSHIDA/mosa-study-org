@@ -23,7 +23,7 @@ mixin pagelink(title, url)
 //- 参考リンク(同一タブ内で遷移)
 mixin infolink(title, url)
 	div.info
-		| 参考:
+		| 参考：
 		a(href=url+".html")= title
 
 //- 外部リンクへ(新規タブが立ち上がる)
@@ -34,7 +34,8 @@ mixin exlink(title, url)
 
 //- 書籍タイトルとリンク
 mixin booklink(title, url, stars)
-	- if(typeof stars === 'number') stars = '★★★★★★★★★★'.substr(0,stars);
+	- stars = stars || 0;
+	- if(typeof stars === 'number') star = '★★★★★★★★★★'.substr(0,stars);
 	span.exlink
 		a(href=url target="_blank")= title
-		span.stars= stars
+		span.stars= star

@@ -1,0 +1,47 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title 値渡しと参照渡し
+
+// 記事本文
+block contents
+	h1 値渡しと参照渡し
+
+	section
+		div.
+
+	section
+		h1 Javascriptにおけるfunction
+		div クロージャを作る場合、参照渡しと値渡しの違いに気をつけないと、意図しない動作をします。
+		div 下記は関数が作成された時のインデックスを表示したいっていう意図で作ったクロージャ。
+
+		script(title="参照渡し",type="code/Javascript").
+			var obj = [], i = 0;
+			// インデックスを返すつもり
+			for(; i < 3; i++) {
+				obj[i] = function(){
+					return i;
+				};
+			}
+
+			assert(obj[0]() !== 0, '0にならない！');
+
+		script(title="値を保持",type="code/Javascript").
+			var obj = [], i = 0;
+			// 引数として値を保持する
+			for(; i < 3; i++) {
+				obj[i] = (function(i){
+					return function(){return i}
+				})(i);
+			}
+
+			assert(obj[0]() === 0, '0になった！');
+			assert(obj[2]() === 2, '2になった！');
+
+
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

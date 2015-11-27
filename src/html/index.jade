@@ -33,7 +33,6 @@ html
 							+index('値の比較「==」と「===」', 'javascript/equal')
 							+index('falsyな値', 'javascript/falsy')
 							li.disabled JSON
-							+indexing('forとforEach', 'javascript/for-and-forEach')
 
 					li ショートハンド(略記法)
 						ul
@@ -43,11 +42,14 @@ html
 							li.disabled !!とか~~とか!0とかvoid 0とか
 					li 関数
 						ul
-							+indexing('関数 Function', 'javascript/function/function')
-							+indexing('オブジェクトとして使う関数', 'javascript/function/function-object')
-							+deadlink('this', 'javascript/function/this')
-							+deadlink('プロトタイプ prototype', 'javascript/function/prototype')
-							+deadlink('クロージャ closure', 'javascript/function/closure')
+							+index('関数 Function', 'javascript/function/function')
+							+index('関数の実体化(new)', 'javascript/function/function-object')
+							+index('this', 'javascript/function/this')
+							+index('apply, callによるthis', 'javascript/function/apply-and-call')
+							+indexing('プロトタイプ prototype', 'javascript/function/prototype')
+							+indexing('クロージャ closure', 'javascript/function/closure')
+							+indexing('値渡しと参照渡し', 'javascript/function/reference-and-value')
+
 
 
 					li 中級編
@@ -55,7 +57,7 @@ html
 							li.disabled Javascriptはシングルスレッドである
 							+indexing('変数のスコープ', 'javascript/scope')
 
-							+indexing('Defferd, Promise', 'javascript/Deferred')
+							+indexing('Defferd, Promise', 'javascript/deferred')
 							+indexing('正規表現', 'javascript/regexp')
 							li.disabled ArrayとObject
 
@@ -79,23 +81,34 @@ html
 							li.disabled 	正規表現リテラルとRegExp
 							li.disabled 	入力値のチェック RegExp.test
 							li.disabled 	前ゼロを除去する"0010" -> "10" / String(+"0010")
-			// section
-				h1 パフォーマンス編
+
+			section
+				h1 次のステップ
+				div 今回は対象外
 				ol
+					li 便利ワザ
+						ul
+							li.disabled スクリプトレット
+							li.disabled String.replace
 					li パフォーマンス
 						ul
-							li.disabled forとforEach
+							+deadlink('forとforEach', 'javascript/for-and-forEach')
 							li.disabled undefinedとvoid 0
+					li 障害対策
+						ul
 							li.disabled クロージャとメモリリーク
 
 
 
-			// section
-			// 	h1 CSS
-			//		ol
-					// flex
-					// レスポンシブ
-					// 脱bootstrap
+			section
+				h1 CSS(今回は対象外)
+				ol
+					li.disabled 脱bootstrap
+						ul
+							li.disabled flex
+							+indexing('unicode-icon', 'css/unicode-icon')
+						// レスポンシブ
+
 			section
 				h1 appendix
 				ol

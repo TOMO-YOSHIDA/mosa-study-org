@@ -23,3 +23,18 @@ html
 		script(src="/mosa-study/lib.min.js")
 		script.
 			CodeHighlight.execute();
+
+			!function(g){
+				var f = function(){};
+				g.console = g.console || {log:f, debug:f, error:f}
+
+				// assertを提供する
+				g.assert = function(val, msg) {
+					if(!!val)
+						console.log('成功：%s, %s', val, msg);
+					else
+						console.error('失敗：%s, %s', val, msg);
+				}
+			}(this);
+
+

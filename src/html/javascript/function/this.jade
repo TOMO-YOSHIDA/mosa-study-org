@@ -8,15 +8,115 @@ block title
 // 記事本文
 block contents
 	h1 this
-	div まだ書いてません
 
 	section
-		h1
 		div.
+			Javascriptをやっていて、まずつまずくのがthis。
+			thisは実行コンテキストを指し、呼び出しパターンによってthisが何を指すのかが変わります。
 
+	section
+		h1 メソッド呼び出しパターン
+		div.
+			オブジェクトのメソッドとして呼び出すパターン。予想通り、thisはオブジェクトになります。
 
-		script(title="forとforEach",type="code/Javascript").
+		script(title="メソッド呼び出しパターン",type="code/Javascript").
+			var a = {
+				name: 'object a',
+				value: "obuject a",
+				method: function(){
+					if(this.name === 'object a') {
+						console.log('this is %s', this.value);
+					}
+				}
+			}
+			a.method(); // -> this is obuject a
+
+	section
+		h1 関数呼び出しパターン
+		div.
+			関数を定義し、関数として呼び出すパターンです。
+
+		script(title="関数呼び出しパターン",type="code/Javascript").
+			function A() {
+				if(this === window) {
+					console.log('this is window.');
+				}
+			}
+			A(); // -> this is window.
+
+		div.
+			'this'がwindow、つまりグローバルオブジェクトを指していることがわかりました。
+			つまり、この関数の中で<code>this.value = 'value'</code>なんて書いたらグローバル変数として定義されてしまいます。
+
+	section
+		h1 コンストラクタ呼び出しパターン
+		div 関数をインタンス化するためにnew付きで実行された場合、thisは関数自身になります。
+		script(title="コンストラクタ呼び出し",type="code/Javascript").
+			function A(value){
+				this.value = value;
+				this.get = function(){
+					return this.value;
+				};
+			}
+
+			var a = new A('this is A');
+			console.log(a.get()); // -> "this is A"
+
+			// 関数としてnewをつけずに呼び出すと？
+			a = A(); // undefined
+			console.log(a.get()); // Uncaught TypeError: Cannot read property 'get' of undefined(…)
+
+			// thisがグローバルオブジェクトのため、えらいことに
+			console.log(window.get()); // -> "this is A"
+
+		div.
+			newを付けて呼び出す場合、thisは意図どおり関数本体を参照します。問題ありません。
+		div.
+			しかしnewをつけずにただの関数として呼び出すと、thisはグローバルオブジェクトです。
+			関数呼び出しパターンで解説したとおりです。
+			関数が宣言されているのはグローバルであり、グローバルオブジェクトのメソッドとして実行されるのです。
+
+		div.
+			オブジェクト内にコンストラクタ関数を保持することで、newを付け忘れてもグローバル汚染することはなくなります。
+
+		script(title="newをつけずに呼び出すと？",type="code/Javascript").
+			var sample = {
+				name: 'sample',
+				A: function A() {
+					console.log('this name is %s', this.name);
+					console.log('constructor is %s', this.constructor.name);
+					// 関数は戻り値を返さない(undefined)
+				}
+			};
+
+			// sample.Aをコンストラクタとして呼び出すとnameが存在しない
+			var a = new sample.A();
+			// -> this name is undefined
+			// -> constructor is A
+
+			// newをつけないパターンはメソッド呼び出しなのでsampleが参照される
+			sample.A();
+			// -> this name is sample
+			// -> constructor is Object
+
+		div.
+			this.constructorを調べることでメソッド呼び出しなのかコンストラクタ呼び出しなのかをチェックすることができます。
+			newなしで呼び出した時にErrorをthrowする対応もできます。
+
+		script(title="newをつけない場合にError",type="code/Javascript").
+			function A() {
+				if(this.constructor.name !== 'A')
+					throw new Error('new なし！');
+			}
+
+			var a = new A(); // -> 問題なし
+			var b = A(); // -> Uncaught Error: new なし！
+
+	section
+		h1 apply,call呼び出しパターン
 		div
+			+pagelink('apply, call', 'apply-and-call')
+			| の呼び出しパターンについては別章にわけます。
 
 // ライター情報
 block writer

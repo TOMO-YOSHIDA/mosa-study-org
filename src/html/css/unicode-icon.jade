@@ -1,0 +1,67 @@
+// 記事テンプレート
+extends ../template
+
+mixin icons(fromCode, toCode)
+	- if(toCode == null) toCode = fromCode;
+	- for(var i = fromCode, c, u; i <= toCode; i++) {
+		- c = '&#' + i + ';';
+		- u = '\\' + Number(i).toString(16);
+		div.icon
+			span!= c
+			span &nbsp;
+			span= c
+			span (
+			span= u
+			span )
+	- }
+
+// 記事のタイトルをココに
+block title
+	title Unicodeでアイコン表示
+
+// 記事本文
+block contents
+	h1 Unicodeでアイコン表示
+	section
+		div ちょっとアイコン欲しいだけなのにfontawesomeとかセットアップするのがめんどうなので、フォントのまま使えないか調査。
+		div 実はCSSでも何でもない。ただのテキストとエスケープ。
+	section
+
+		h1 早速使ってみる
+		div.
+			問題なく使えた。
+			iPadやiPhoneでは少し違った見え方をする。
+
+		div.flex
+			+icons(9989)
+			+icons(10062)
+			+icons(9998)
+			+icons(9851)
+			+icons(8984)
+			+icons(10000)
+			+icons(10144)
+			+icons(10005)
+			+icons(10071)
+
+			+icons(10004)
+			+icons(10162)
+	section
+		h1 9961~10177までをリスト化
+		div.flex
+			+icons(9961, 10177)
+
+	section
+		h1 注意事項
+		ul
+			li フォントがインストールされていないとそもそも使えない
+			li CSSのcontentプロパティ
+				ul
+					li &#xxxx;形式が使えない
+					li \00a9の様に、16進数で合わせる
+
+	section
+		+exlink('Unicode character table - Dingbats', 'http://unicode-table.com/en/blocks/dingbats/')
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

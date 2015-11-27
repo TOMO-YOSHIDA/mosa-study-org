@@ -24,13 +24,13 @@ block contents
 				console.log(b); // bが見える
 			};
 
-			fnc(); // 関数を実行するとaが見える
+			fncB(); // 関数を実行するとaが見える
 
 			console.log(a); // aが見える
 			console.log(b); // bが見えない(Uncaught ReferenceError: b is not defined(…))
 
 		div.
-			この結果を見ると、変数は関数の内側でのみ参照できることがわかります。
+			この結果を見ると、変数はその変数が宣言された関数の内側でのみ参照できることがわかります。
 			また、fncB関数の内側では外側の変数aも参照できます。
 
 	section
@@ -75,7 +75,7 @@ block contents
 
 		div.
 			いくら<code>var</code>をつけたとしても、関数外ではグローバル変数になります。
-			
+
 
 
 

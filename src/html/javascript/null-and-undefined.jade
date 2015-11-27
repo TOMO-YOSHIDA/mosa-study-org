@@ -70,7 +70,7 @@ block contents
 		div そのかわり、<code>!==</code>でtrueと判定されます。なんてステキなあまのじゃく。
 		div イコール演算子の存在意義を否定するような動作ですが、同一オブジェクトにも関わらず"イコールではない"と判定されるのはNaNだけです。
 		div <code>value !== value</code>なので間違えないように。
-		div <code>value !== NaN</code>だとNaN以外の全てがfalseになるので使えません。
+		div <code>value !== NaN</code>だとNaN以外の全てがtrueになるので使えません。
 
 		div.
 			NaNそのものを判定するケースは少なく、「数字であるか？」の様なパラメータチェック的な用途が多いと思います。
@@ -85,9 +85,9 @@ block contents
 			li NaNは数字になれなかったヤツ
 			li NaNを判定するには<code>value !== value</code>を使う
 
-		+infolink('数値判定(isNumeric)関数の作成', '../framework/function-isNumeric')
 		div 補足：NaNそのものをチェックする<code>Number.isNaN</code>関数がありますが、ES6提案であり、IEでは使えません。
 		+exlink('Number.isNaN()', 'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN')
+		+infolink('数値判定(isNumeric)関数の作成', '../framework/function-isNumeric')
 
 // ライター情報
 block writer

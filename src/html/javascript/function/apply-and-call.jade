@@ -1,0 +1,112 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title apply, call
+
+// 記事本文
+block contents
+	h1 apply, call
+
+	section
+		div.
+
+	section
+		h1 apply, call呼び出しパターン
+		div Javascriptの良いところであり悪いところでもあるのが、thisを自由に指定することができることです。
+		div 関数のメソッドapplyやcallを使うことで自由に実行コンテキストを指定できます。
+		script(title="call, apply",type="code/Javascript").
+
+			var _this = {value:"this is another object!"};
+
+			var obj = {
+				value : "this is obj!!",
+				method : function(a,b){
+					console.log("%s, %s, %s", this.value, a, b);
+				}
+			}
+			// objのメソッド呼び出しなのでコンテキストはobj
+			obj.method("A", "B");
+			// 実行結果：this is obj!!, A, B
+
+			// apply, callに実行コンテキストを渡すと、thisを変更できる！
+			obj.method.apply(_this, ["apply", "B"]);
+			obj.method.call(_this, "call", "B");
+			// 実行結果：this is another object!, apply, B
+			// 実行結果：this is another object!, call, B
+
+			// コンテキストを指定しない場合、グローバルオブジェクトになる
+			window["value"] = "this is window!!";
+			obj.method.apply(void 0, ["apply", "B"]);
+			// 実行結果：this is window!!, apply, B
+
+			// thisありの状態でコンテキストを指定しない場合もやっぱりグローバル
+			var b = {
+				value : "this is b!",
+				exec : function(){
+					console.log(this.value);
+					obj.method.apply(null, ["apply", "B"]);
+				}
+			}
+			b.exec();
+			// 実行結果：this is b!
+			// 実行結果：this is window!!, apply, B
+
+		div.
+			関数はapply, callというメソッドを持っています。
+			第一引数にコンテキストを渡すことで、実行コンテキストを動的に決定できます。
+
+		div.
+			apply, callのどっちを使うかという問題については「状況によって使いやすい方」を選ぶべきです。
+		div.
+			引数がすでに配列としてまとまっている場合はapply、列挙するならcall。
+			callを使わずに配列にしてapplyで統一するというのもアリだと思います。
+
+	section
+		h1 実行時コンテキストのバインド
+		div.
+			実行時のコンテキストを予め固定しておくことも可能です。
+			つまり、関数呼び出し/メソッド呼び出しにかかわらず、thisを固定できます。
+
+		script(title="コンテキストのバインド",type="code/Javascript").
+
+			var bind = function(func, context) {
+				// contextを固定した関数を返す
+				return function() {
+					func.apply(context, arguments);
+				}
+			};
+
+			// 固定する関数
+			var func1 = function() {
+				if(this === window) {
+					console.log('this is window');
+				} else {
+					console.log(this.name);
+				}
+			}
+
+			// bindするコンテキスト
+			var contextObj = {
+				name: 'this is contextObj'
+			}
+
+			// バインドせずに実行
+			func1(); // -> this is window
+
+			// contextとfunc1をバインドして実行
+			var bindedFunc1 = bind(func1, contextObj);
+			bindedFunc1(); // -> this is contextObj
+
+			// もう新しいコンテキストは受け付けない
+			bindedFunc1.apply({name:'new context'});　// -> this is contextObj
+
+		div.
+			bindedFunc1の方は、本来なら関数呼び出しなのでthisはwindowを指すはずです。
+			先にコンテキストを固定したのでthisがちゃんとcontextオブジェクトを見るようになっています。
+		div 理解してしまえば簡単ですね。
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

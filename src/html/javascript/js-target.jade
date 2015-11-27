@@ -44,10 +44,30 @@ block contents
 			コンソールにソースをコピー＆ペーストしながら見ていくとわかりやすいと思います。
 
 	section
+		h1 ロード済み関数
+		div.
+			デバッグ用に、assert関数を定義しています。
+
+		script(title="assert関数",type="code/Javascript").
+			var assert = function(val, msg) {
+				if(!!val)
+					console.log('成功：%s, %s', val, msg);
+				else
+					console.error('失敗：%s, %s', val, msg);
+			}
+
+			assert(true, 'console.log出力');
+			// -> 成功：true, console.log出力
+
+			assert(false, 'console.error出力');
+			// -> 失敗：false, console.error出力
+
+	section
 		h1 動作確認ブラウザ
 		div.
 			動作確認はMacOSXのchromeで行っています。
 			表示の確認だけiPadとiPhone6も。
+
 
 // ライター情報
 block writer
