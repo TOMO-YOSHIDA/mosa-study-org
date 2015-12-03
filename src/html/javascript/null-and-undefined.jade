@@ -13,6 +13,13 @@ block contents
 			Javascriptの値である、nullとundefinedとNaNについて解説します。
 			「無効な値」としてよく出てきますが、それぞれ違うものなので混同しないように。
 
+		div null, undefined, NaNの意味は下記の通り。
+		ul
+			li nullはnullというオブジェクト
+			li undefinedは未定義、または存在しない
+			li NaNは数字になれなかった計算結果
+		div これらをコードで検証していきます。
+
 	section
 		h1 nullとundefined
 		div.
@@ -23,21 +30,24 @@ block contents
 			// 変数の定義
 			var a;
 			var b = null;
-			console.log(a); // 宣言しただけではなにも代入していないのでundefined
-			console.log(b); // 明示的にnullを代入しているのでnull
+			assert(a === undefined, '宣言しただけではなにも代入していないのでundefined');
+			assert(b === null, '明示的にnullを代入しているのでnull');
 
 			// 新しいオブジェクトを作成
 			var obj = {
 				A:"string A!",
 			};
-			console.log(obj.A); // -> "string A!"
-			console.log(obj.B); // まだプロパティを定義していないのでundefined
+			assert(obj.A === 'string A!', 'Aは存在する');
+			assert(obj.B === undefined, 'まだプロパティを定義していないのでundefined');
 
 		div.
 			undefinedは「未定義」の意味であり、varで変数を宣言したが代入されていないもの、またはオブジェクトの存在しないプロパティがundefinedとして判定されます。
 		div.
 			対してnullは明示的に代入されたものなので、誰かが意図してnullに設定したものです。
 			デバッグ時にundefinedが出てきたら、スペルミスの場合も多々あります。
+
+		script(title="unllとundefinedのコード例", type="code/Javascript").
+			var
 
 	section
 		h1 NaN (not a number)

@@ -19,7 +19,7 @@ html
 				div メインは「ずっと使える」知識を紹介します。
 
 			section
-				div 11/26の勉強会用。
+				div 2015/11/26の勉強会が終わったので、次回に向けて気ままに更新中。
 
 			section
 				h1 Javascriptの基礎知識
@@ -27,11 +27,12 @@ html
 					li 基礎知識
 						ul
 							+index('JS学習のターゲットバージョン', 'javascript/js-target')
-							+indexing('Javascriptの型', 'javascript/type-of-js')
+							+index('Javascriptの型', 'javascript/type-of-js')
 							li.disabled 暗黙の型変換
 							+index('nullとundefind, NaN', 'javascript/null-and-undefined')
 							+index('値の比較「==」と「===」', 'javascript/equal')
 							+index('falsyな値', 'javascript/falsy')
+							+index('変数のスコープ', 'javascript/scope')
 							li.disabled JSON
 
 					li ショートハンド(略記法)
@@ -50,13 +51,9 @@ html
 							+indexing('クロージャ closure', 'javascript/function/closure')
 							+indexing('値渡しと参照渡し', 'javascript/function/reference-and-value')
 
-
-
 					li 中級編
 						ul
 							li.disabled Javascriptはシングルスレッドである
-							+indexing('変数のスコープ', 'javascript/scope')
-
 							+indexing('Defferd, Promise', 'javascript/deferred')
 							+indexing('正規表現', 'javascript/regexp')
 							li.disabled ArrayとObject
@@ -93,6 +90,7 @@ html
 					li パフォーマンス
 						ul
 							+deadlink('forとforEach', 'javascript/for-and-forEach')
+							+index('script読み込みのパフォーマンス', 'performance/script-tag')
 							li.disabled undefinedとvoid 0
 					li 障害対策
 						ul
@@ -106,7 +104,7 @@ html
 					li.disabled 脱bootstrap
 						ul
 							li.disabled flex
-							+indexing('unicode-icon', 'css/unicode-icon')
+							+index('unicode-icon', 'css/unicode-icon')
 						// レスポンシブ
 
 			section

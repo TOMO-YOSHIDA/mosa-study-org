@@ -30,7 +30,7 @@ html
 
 				// assertを提供する
 				g.assert = function(val, msg) {
-					if(!!val)
+					if(val)
 						console.log('成功：%s, %s', val, msg);
 					else
 						console.error('失敗：%s, %s', val, msg);

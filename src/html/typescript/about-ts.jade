@@ -1,0 +1,69 @@
+include ../mixin
+extends ../template
+// 記事のタイトルをココに
+block title
+	title TypeScript
+
+// 記事本文
+block contents
+	h1 TypeScript
+	section
+		h1 TypeScriptとは？
+		div.
+			TypeScriptはJavascriptソースを吐き出すためのプログラム言語です。
+			AltJSというジャンルになります。
+			Microsoftがメインとなって進めているオープンソースプロジェクト。
+		ul
+			li AltJS
+			li MS製のvscodeがTypeScript完全対応
+
+		div.
+			Javascriptなんて直接書けばいいじゃん、っていうのが大勢だって言うのはしってます。
+			でもTypeScriptは「開発」をすすめる上での利点がたくさんあるので超オススメです。
+
+	section
+		h1 メリット
+		ul
+			li Javascriptに擬似的に「型」をもたせられる
+			li インテリセンスによる補完が効く
+			li vscodeを使えばリファクタリングもできる
+			li 変数スコープの問題が軽減(解消ではない)
+			li (擬似的に)Javaの様なクラス構文が使える
+
+		div つまり？
+		ul
+			li 型でコンパイル時にチェックできる
+			li 修正の影響範囲がわかる
+			li クラス化で開発効率UP(Javaラーを巻き込める)
+		div.
+			ことで、実行前にエラーを潰せます。
+			JSではスペルミスが意図しない動作の原因になりがちですが、undefinedになるだけで実行時エラーになりにくいです。
+			「実行前に潰せる」というのはJSを書いている人なら、ありがたみがわかると思います。
+
+	section
+		h1 デメリット
+		ul
+			li コンパイルが必要
+			li 型を定義するのが面倒
+			li 環境構築が最初は面倒
+			li 「擬似的」型なので、JSで直接書かれたプログラムではチェックできない
+
+		div デメリットの対応策
+		ul
+			li gulpにまかせて自動コンパイル
+			li 外部公開しないなら型定義のd.tsファイルは不要
+			li 環境構築はアーキテクトに任せる
+
+
+	section
+		h1 変数を使ってtrue/falseの判定をする
+		div.
+			下記の例を見てみましょう。
+			変数に文字列を入れていますが、そのままif文の判定条件になっています。
+
+		script(title="falsyな値の例", type="code/Javascript").
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

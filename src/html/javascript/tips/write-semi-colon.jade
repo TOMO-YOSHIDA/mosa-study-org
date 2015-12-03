@@ -1,0 +1,65 @@
+// 記事テンプレート
+extends ../../template.jade
+
+// 記事のタイトルをココに
+block title
+	title ステートメントの最後にセミコロンを付ける
+
+// 記事本文
+block contents
+	h1 ステートメントの最後にセミコロンを付ける
+	section
+		h1 行末にセミコロンを付けるクセを
+		div.
+			Javascriptは、ステートメントの終わりであるセミコロンを付ける必要がありません。
+			改行位置がステートメントの終わりとみなされれば正常にコンパイルされるからです。
+
+		script(title="セミコロンなしの書き方",type="code/Javascript").
+			var s = "this is string"
+
+			var a,b
+
+			a = s.toString()
+			b = a.trim()
+
+		div.
+			ただし、JSのファイルサイズを小さくするためにminifyすると不具合が起きます。
+
+		script(title="minify時のエラーケース",type="code/Javascript").
+			var s = "this is string" var a,b a = s.toString() b = a.trim()
+
+		div.
+			minifyする場合、改行コードをなくすのでセミコロンがないとステートメントの終わりをJSエンジンが判断できません。
+
+	section
+		h1 セミコロンをつけた書き方
+		div.
+			単純にステートメントの最後にセミコロンを付けるだけです。
+
+		script(title="セミコロンありの書き方",type="code/Javascript").
+			var s = "this is string";
+
+			var a,b;
+
+			a = s.toString();
+			b = a.trim();
+
+		div これをminifyすると
+		script(title="セミコロンありの書き方",type="code/Javascript").
+			var s = "this is string";var a,b;a = s.toString();b = a.trim();
+		div.
+			となり、問題なくコンパイル・実行されます。
+			「ステートメントの終わり」を明確にすることはプログラムを見る人にとっても見やすくなります。
+
+		div.
+			CoffeeScriptではセミコロンなしで書ける、むしろ書くな的な文法ですが、ジェネレートされるJavascriptにはちゃんとセミコロンがついています。
+
+		div JSには必要なものとして、セミコロンを付ける習慣をつけましょう。
+
+	section
+		h1 まとめ
+		div.important ステートメントの最後には必ずセミコロンをつける
+
+// ライター情報
+block writer
+	include ../../persons/TomoYoshida

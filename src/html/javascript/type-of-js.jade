@@ -10,15 +10,62 @@ block contents
 	h1 Javascriptの型
 
 	section
+		div Javascriptには型がない、とよく言われます。
+		div.
+			間違いではないのですが、「変数に型がない」ためなんでも入れることができます。
+			しかし変数に入れるデータそのものには型が存在します。
+			ですので、変数に入っているものが何であるか？の型チェックは実行時に可能です。
+		ul
+			li データ型をチェックするには<code>typeof</code>演算子を使う
+			li データのコンストラクタを調べるには<code>instanceof</code>を使う
+
+	section
 		h1 string
 		div 文字列を表す。長さには特に制限はなく、メモリいっぱいまで使えるっぽい。
+		div.
+			ダブルクォート、またはシングルクォートで囲うと文字列になります。
+			囲った文字と同じ記号を中に入れたい場合は'\'でエスケープします。
+		script(title="string",type="code/Javascript").
+			var s = "123";
+			assert(typeof s === 'string', 'sは文字列');
+
+			s = '123"456", \' <-エスケープ';
+			assert(s, 'シングルクォートをエスケープできた')
 
 	section
 		h1 number
-		div
+		div クォートで囲わずに数字を記述するとnumberになります。
 		ul
 			li いわゆる倍精度浮動小数点数(IEEE754標準の64ビット浮動小数点数形式)
-			li 範囲は±1.7976931348623157×10308
+			li 範囲は±1.7976931348623157x10<sup>308</sup>
+			li.important 小数点以下の計算は誤差が発生するので注意!
+
+		script(title="number",type="code/Javascript").
+			var d = 1;
+			assert(d === 1, '数字の1になった');
+			assert(typeof d === 'number', 'dは数字');
+			assert(18 - 17 === 1, '整数の計算は(ほぼ)大丈夫');
+			assert(1.8 - 1.7 === 0.1, '小数点計算には誤差がある');
+			console.log('計算結果は %s', 1.8-1.7);
+
+			// 整数でも大丈夫じゃない例
+			d = 9007199254740992; // = 2^53
+			assert(d + 0 == '9007199254740992', '整数計算OK');
+			assert(d + 1 != '9007199254740993', '整数計算NG');
+			console.log('計算結果 %s', d + 1);
+		div.
+			整数でも桁が増えすぎて、指数表記になった場合に表現しきれません。
+
+	section
+		h1 boolean
+		div
+		ul
+			li true, falseの２値
+
+		script(title="boolean",type="code/Javascript").
+			var b = true;
+			assert(typeof b === 'boolean', 'bはboolean');
+			assert(b === true, 'boolean');
 
 	section
 		h1 function
@@ -29,18 +76,78 @@ block contents
 			li コンストラクタとして使える
 			li 関数にもプロパティを定義できる
 
+		script(title="function",type="code/Javascript").
+			var f = function(){};
+
+			assert(typeof f === 'function', 'fはfunction');
+
+			// 関数にもメソッドがある
+			console.log(f.toString());
+
+			// ところでassertってなんなのよ？
+			console.log(assert.toString());
+
+
+		+infolink('function', 'function/function')
+
 	section
 		h1 object
-		div
+		div.
+			けっこう雑に、いろんなものがobjectとして返されます。
+
+		script(title="object",type="code/Javascript").
+			assert(typeof null === 'object', 'nullもobject');
+
+	section
+		h1 配列
+		div データを'['と']'で囲うと配列になります。
+		script(title="object",type="code/Javascript").
+			var a = []; // 空の配列
+			assert(typeof a === 'object', '配列もobject');
+			assert(a instanceof Array, 'Array型');
+
+			a = [1, false, 'ABC']; // 内包するデータ型は問わない
+			var b = [1,2,[3,4,5],6,7];
+			console.log(b[2]); // [3,4,5]
+
+	section
+		h1 オブジェクト
+		div.
+			オブジェクトには、プロパティを定義できます。
+			プロパティにはnull, undefined, functionなどなんでも入れられます。
+
+		script(title="object",type="code/Javascript").
+			var o = {};
+			o.bool = true; // boolean
+			o.f = function(){}; // function
+			o.name = 'object'; // string
+
+			// consoleに出ている▶のボタンをクリックすると全部見えます
+			console.log(o);
+
+			// 初期化時に代入を済ませることもできます。
+			o = {a:"A", b:true, c:3};
+			console.log(o);
+
+	section
+		h1 変数に型はないのか？を検証
+		div.
+			結論から言うと、ありません。
+			ある型で定義した変数でも、それ以外の型を入れ放題です。
+
+		script(title="変数に型はあるか？",type="code/Javascript").
+			var a = 1; // 数字として入れる
+			a = true; // booleanでも問題ない
+			a = "ABC"; // 文字列でも
+			a = function(){console.log('OK!')}; // 関数でも
+
+			a(); // -> OK!
 
 	section
 		h1 まとめ
 		ul
-			li string
-			li number
-			li function
-			li Object
-
+			li データそのものには型がある
+			li 変数に型はないので型強制はできない
 
 // ライター情報
 block writer
