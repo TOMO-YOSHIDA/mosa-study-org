@@ -1,5 +1,16 @@
 include ../mixin
 extends ../template
+
+mixin falsy_values
+	ul
+		li 0: 数字のゼロ
+		li "": 長さゼロの文字列
+		li false: booleanのfalse
+		li null: null(明示的なnull)
+		li undefined: 未定義(または何も代入されていない状態)
+		li NaN: 数字ではない
+
+
 // 記事のタイトルをココに
 block title
 	title Javascript: falsyな値
@@ -21,7 +32,7 @@ block contents
 		script(title="falsyな値の例", type="code/Javascript").
 			var a  = 'abc';
 			if(a) { // <- この行に注目!!
-				console.log('aがtrueとして判定された');
+				assert(a, 'がtrueとして判定された');
 			}
 			// -> aがtrueとして判定された
 
@@ -34,30 +45,27 @@ block contents
 
 		div Javascriptでは、下記6つの値がfalseと判断され、それ以外はtrueです。
 
-		ul
-			li 0: 数字のゼロ
-			li "": 長さゼロの文字列
-			li false: booleanのfalse
-			li null: null(明示的なnull)
-			li undefined: 未定義(または何も代入されていない状態)
-			li NaN: 数字ではない
+		+falsy_values
 
 		div.
+			それ以外は全部trueです。
 			つまり、6つのfalsyを覚えるだけで良いことになります。
 			ここだけ忘れないように。
 
 		div.
 			ほんとは<code>-0</code>っていう第７のfalsyな値がありますが、0とほぼ同じ扱いになるので今回は省略。
 			<code>0 === -0</code>はtrueだし、<code>String(-0)</code>は"0"です。
+		div -0は<code>-1 / Infinity</code>で作れます。
 
 		script(title="falsyな値のチェック", type="code/Javascript").
 			// 配列の中には全7種類のfalsyな値が格納されている
 			var falsy = [0, "", false, null, undefined, NaN, document.all];
 
 			// 全部の値がfalseと判定される
-			falsy.forEach(function(v){
-				if(!v) console.log(v + " is falsy!");
-			});
+			for (var i = 0,v; i < falsy.length; i++) {
+				v = falsy[i];
+				assert(!v, v + " is falsy!");
+			}
 
 		div
 			| ブラウザで実行する場合は<code>document.all</code>もfalsyですが、特に覚えておく必要はないでしょう。
@@ -115,14 +123,14 @@ block contents
 			if(b_true) console.log("b_true:true!");
 			if(b_false) console.log("b_false:true!");
 
-		div 長いこと仕事でJavascriptとたわむれてきましたが、Booleanオブジェクトを使用しなくてはいけないケースはありませんでした。
+		div ただ、長いこと仕事でJavascriptとたわむれてきましたが、Booleanオブジェクトを使用しなくてはいけないケースはありませんでした。
 		div なのでプリミティブのbooleanを使っておけば間違いないです。
 
 	section
 		h1 まとめ
 		ul
 			li Javascriptでfalseと判定される値は６つ
-			li それ以外は全部true
+			+falsy_values
 
 		div.
 			これがわからないままだと先に進めませんよ！

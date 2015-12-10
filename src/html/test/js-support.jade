@@ -1,0 +1,22 @@
+// 記事テンプレート
+extends ../template
+
+// 記事のタイトルをココに
+block title
+	title Javascriptサポート状況のテスト
+
+
+// 記事本文
+block contents
+	h1 Javascriptサポート状況のテスト
+	section
+		div 端末のJavascriptサポート状況をテストします。
+
+	table.result
+
+	script(src="../scripts/support.js")
+
+
+// ライター情報
+block writer
+	include ../persons/TomoYoshida

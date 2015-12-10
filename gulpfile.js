@@ -115,15 +115,25 @@ gulp.task('jade', function () {
 		.pipe(gulp.dest('public/mosa-study/'));
 });
 
+// 生JS
+gulp.task('plane-js', function () {
+	gulp.src(['src/scripts/*.js'])
+		.pipe(plum())
+		.pipe(gulp.dest('public/mosa-study/scripts/'));
+});
+
+
 //ファイルの更新を監視する
 gulp.task('watch', function () {
 	gulp.watch(lessPath, ['less']);
 	gulp.watch(jadePath, ['jade']);
 	gulp.watch(lessSubPath, ['sub-less']);
+	gulp.watch('src/scripts/*.js', ['plane-js']);
+
 });
 
 gulp.task('build', function () {
-	runSequence('clean', 'bower', 'less', 'sub-less', 'jade');
+	runSequence('clean', 'bower', 'less', 'sub-less', 'jade', 'plane-js');
 });
 
 // build & watch
