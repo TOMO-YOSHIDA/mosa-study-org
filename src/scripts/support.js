@@ -3,6 +3,7 @@
 
 	var parent = document.getElementsByClassName('result');
 
+	if (!parent.length) return;
 
 	function test(obj) {
 		var s = "";
