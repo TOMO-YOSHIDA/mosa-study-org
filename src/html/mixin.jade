@@ -1,17 +1,7 @@
 //- index.jadeで使用するリンク(liタグつき)
-mixin index(title, url)
+mixin index(title, url,clazz)
 	li
-		a(href=url+".html")= title
-
-//- index.jadeで使用するリンク(工事中)
-mixin indexing(title, url)
-	li
-		a(href=url+".html").making= title
-
-//- index.jadeで使用するリンク(未作成)
-mixin deadlink(title, url)
-	li
-		a(href=url+".html").deadlink= title
+		a(href=url+".html",class=clazz)= title
 
 //- 記事内で使用するリンク
 mixin pagelink(title, url)

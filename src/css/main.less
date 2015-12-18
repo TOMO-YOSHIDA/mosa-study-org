@@ -234,8 +234,10 @@ section > div > code {
 	display:inline-block;
 	border-radius: 0.5em;
 	background:rgba(0,0,0,0.06);
+	border: 1px solid rgb(190,190,190);
+	line-height: 1.4;
 	padding:0 0.2em;
-	// margin:0 0.3em;
+	margin:0 0.2em;
 }
 
 .flex {
@@ -289,9 +291,7 @@ table {
 }
 
 // ラベル
-.deadlink:after,
-.inspection:after,
-.making:after
+.label
 {
 	border-radius: 0.4em;
 	padding:0 0.4em;
@@ -302,8 +302,17 @@ table {
 	vertical-align: middle;
 
 }
+// 更新
+.update:after {
+	.label;
+	content:"\2714 更新!";
+	background:#FF3366;
+	color:white;
+}
+
 // 作成中
 .making:after {
+	.label;
 	content:"\270e 作成中";
 	background:#179C55;
 	color:white;
@@ -311,6 +320,7 @@ table {
 
 // 検証中
 .inspection:after {
+	.label;
 	content: "検証中";
 	background:#F1F918;
 	color:#F90000;
@@ -319,6 +329,7 @@ table {
 
 // デッドリンク
 .deadlink:after {
+	.label;
 	content: "\2715 未作成";
 	background:#7B7B7B;
 	color:white;

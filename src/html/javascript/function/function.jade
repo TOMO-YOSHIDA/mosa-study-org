@@ -9,6 +9,33 @@ block title
 block contents
 	h1 function:関数
 	div.
+		Javaで重要なのがクラスなら、Javascriptで超重要なのは関数です。
+		ちょっと長いですが、頑張って最後までマスターしてください。
+
+	section
+		h1 関数の宣言
+		div 下記の構文で関数を宣言できます。
+		ul
+			li function宣言(必須)
+			li 関数の名前(任意)
+			li カッコつきの引数リスト(引数は0個以上、つまりなくても良い)
+			li ブレスで囲った関数本体(囲ってあれば空でも可)
+		div なんと、名前は必須じゃないんですね。
+
+		script(title="関数の宣言",type="code/Javascript").
+			// 名前付き関数
+			function funcA(){assert(true, 'funcAが実行された')};
+			funcA();
+			assert(funcA.name, 'funcAには名前がある');
+
+			// 無名関数を変数に入れて実行
+			var funcB = function(){assert(true, '無名関数を実行')};
+			funcB();
+			assert(funcB.name === "", 'funcBには名前がない');
+
+		div.
+			無名関数を名前のある変数に入れたら名前付きじゃないか、というツッコミに対する答えも用意しておきました。
+			無名関数は、関数名を示すname属性が空文字になります。
 
 	section
 		h1 Javascriptにおけるfunction
@@ -21,114 +48,134 @@ block contents
 			li 関数は戻り値として関数を返せる
 			li 関数にもプロパティを持てる
 
-	section
-		h1 関数の宣言
-		div 下記の構文で関数を宣言できます。
-		ul
-			li function宣言(必須)
-			li 関数の名前(任意)
-			li カッコつきの引数リスト(引数は0個以上、つまりなくても良い)
-			li ブレスで囲った関数本体(囲ってあれば空でも可)
-		script(title="関数の宣言",type="code/Javascript").
-			// 名前付き関数
-			function funcA(){};
-
-			// 無名関数
-			function(){};
-
-			// 無名関数を変数に入れる
-			var funcB = function(){};
+		div これから、順番にこの特性を見ていきます。
 
 	section
-		h1 関数を引数として渡すの例
+		h1 関数の代入
 		div.
-			Javascriptでは、配列のソートにArrays.sortがビルトインで用意されています。
-			ただ、この関数のソート順は「文字列比較」なので、数値順に並べたいという希望がかないません。
+			関数は変数に入れたり、配列の要素にしたりできます。
 
-		script(title="標準ソート関数は文字列順",type="code/Javascript").
-			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
-			arr.sort(); // -> [10, 20, 30, 45, 64, 7, 78, 9, 90, 93]
+		script(title="関数の代入",type="code/Javascript").
+			// 関数を変数に代入
+			var a = function(){assert(true, '変数から関数をコール')};
+			a();
 
-		div.
-			そこで自前の比較用関数をArrays.sortに渡します。
+		script(title="関数を配列の要素にする",type="code/Javascript").
+			// 配列の要素にする
+			var arr = [function(){assert(true, '配列の要素として関数をコール')}];
+			arr[0]();
 
-		script(title="ソート用関数をコールバックに渡す",type="code/Javascript").
-			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
-			// aとbに数字が渡る前提で、差を返す。
-			var compare = function(a,b){
-				return a - b;
+		script(title="オブジェクトのメソッド",type="code/Javascript").
+			// オブジェクトのメソッドとして定義
+			var o = {
+				value:'object value',
+				method:function(){
+					assert(this.value, 'オブジェクトの変数にアクセス');
+				}
 			};
+			o.method();
 
-			// 大小を数字として判断する関数を引数として渡すと期待通りの結果が得られる
-			arr.sort(compare); // -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
-		ul
-			li 関数を変数compareとして宣言
-			li compare関数をArray.sort関数の引数として渡す
-		div の２つの特徴を確認できました。
-		div.
-			コールバックとして渡す場合、関数に"()"をつけないことに注意してください。
-			"()"をつけると、関数が即実行されます。
-			非同期実行させるためにコールバックを渡しているつもりで、実行結果を渡しているオマヌケコードは実務でも散見されます。
+			// メソッドは後から追加もできる
+			o.newMethod = function(){
+				assert(this.value, '新しいメソッドを追加');
+			};
+			o.newMethod();
 
 	section
-		h1 関数を引数として渡すの例２
+		h1 関数は引数として関数を受け取れる
 		div.
-			上記の例では「わかりにくいよ！ってかわからないよ！」の声多数。
-			もっと簡単にしたサンプルでリベンジ。
+			Javascriptを使いこなすにはこの概念が必須。
+			最初はなんのこっちゃ？と思いますが、理解すれば強力です。
+			「関数もオブジェクトである」ため、そのままオブジェクトして関数を渡せます。
+
 
 		script(title="２つの数を計算する",type="code/Javascript").
-			// ２つの数を保持しているオブジェクトを作成する
-			var m = {
-				a: 2, b: 4, // 数字を保持
+			// ２つの変数に数字を保持しているオブジェクトを作成する
+			var obj = {
+				a: 2, // 数字を保持
+				b: 4, // 数字を保持
 
-				// 計算するロジック関数fは引数で受け取る
+				// 計算方法は持たず、計算方法を実装した関数を受け取る関数
 				calc: function(f) {
-					// 引数に渡された関数を使って計算結果を返す
+					// 引数fとして渡された関数を実行する
 					return f(this.a, this.b);
 				}
 			};
 
-			// 足し算する関数
-			var add = function(a,b){return a + b};
+			// 引数２つを足し算して返す関数
+			var add = function(arg1, arg2){return arg1 + arg2};
 
-			// 掛け算する関数
-			var multi = function(a,b) {return a * b};
+			// 引数２つを掛け算して返す関数
+			var multi = function(arg1, arg2) {return arg1 * arg2};
 
-			// var m = new MyObject(2,4);
-			assert(m.calc(add) === 2 + 4, '足し算された!');
-			assert(m.calc(multi) === 2 * 4, '掛け算された!');
+			// calc関数にadd, multiの関数を引数として渡す
+			assert(obj.calc(add) == 6, 'add関数を使って足し算された!');
+			assert(obj.calc(multi) == 8, 'multi関数を使って掛け算された!');
 
 		div.
-			オブジェクトmは2と4という、２つの数字を保持しています。
+			オブジェクトobjはaとbという変数名で、２つの数字を保持しています。
 			このオブジェクトにはcalcというメソッドがありますが、計算方法は定義されていません。
 			計算する関数は外部からfという引数で受け取るように作られています。
 		div.
 			ここで足し算関数'add'と掛け算関数'multi'を外部からcalc関数に渡します。
-			するとcalcでは保持していた２つの数を渡された関数に渡して実行します。
+			calc関数内では、引数として渡された関数にobjの持つ２つの変数を渡して実行します。
 		div これで外部から計算方法を渡し、それを使って結果を得ることができました。
 
+	section
+		h1 関数は戻り値として関数を返せる
+		div.
+			ややこしいのですが、関数から関数を返すことができます。
+			でも「関数もオブジェクトである」ことを思い出せば、「関数からオブジェクトを返す」だけの単純なことです。
+
+		script(title="関数から関数を返す",type="code/Javascript").
+			var getFunction = function(){
+				return function(value) {
+					assert(value, '返された関数が実行された');
+				};
+			};
+
+			var func = getFunction();
+			func('代入してから実行');
+
+			// ちょっと読みにくいけど代入しなくても実行可能
+			getFunction()('直接実行');
+
+	section
+		h1 関数にもプロパティを持てる
+		div.
+			「関数はオブジェクト」なので、直接プロパティを持つことができます。
+		script(title="関数にもプロパティを持てる",type="code/Javascript").
+			function A(){};
+			A.value = 'this is function A.';
+
+			assert(A.name, '名前付き関数には名前がある');
+			assert(A.value, '関数のプロパティにアクセスできた');
+			assert(A.toString(),'デフォルトでメソッドも持っている');
+
+		div.
+			関数プロパティは、カウンタを保持するとかで使えるかも。
+			ただ、外部から書き換えられてしまうのでクロージャ(別章で解説)で変数を隠ぺいした方がプロっぽいです。
 
 	section
 		h1 無名関数
 		div.
 			関数には名前をつけることができますが、必須ではありません。
-			使い捨てなら定義だけで使えます。
+			使い捨てなら変数にすることなく定義だけで使えます。
 
-		script(title="ソート用関数を無名関数として渡す",type="code/Javascript").
-			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+		script(title="無名関数を引数として渡す",type="code/Javascript").
+			var obj = {a:2, b:4, calc:function(f){return f(this.a, this.b)}};
+			var result = obj.calc(function(a,b){return a + b});
+			assert(result, '計算結果');
 
-			//使い捨てなら名前をつけるまでもない
-			arr.sort(function(a,b){return a - b});
-
-			// 結果 -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
 		div プロっぽい。
+		div でも読みにくくなるので、本当のプロなら読みやすさ(=保守のしやすさ)も考えて書きましょう。
 
 	section
 		h1 関数の即実行
 		div.
 			関数を作り、即実行して捨てる。
 			変数を関数内で完結させられるのでグローバル変数を汚染しません。
-			動作検証の場合もこの形式にすることで、変数を残さないので再検証時に悪さしません。
+			デバッグや動作検証の場合もこの形式にすることで、変数を残さないので再実行時に悪さしません。
 
 		script(title="関数の即実行",type="code/Javascript").
 			// 関数をカッコで囲う
@@ -149,6 +196,15 @@ block contents
 		div.
 			"!"をつけることで、関数の返り値をboolean反転します。
 			他に"+"や"-"なども使えます。
+
+		script(title="グローバルに変数を残さない",type="code/Javascript").
+			// 変数宣言は関数内なのでグローバルに出て行かない
+			!function(){
+				var a = 1, b = 2;
+				assert(a + b, '計算成功');
+			}();
+
+			assert(typeof a == 'undefined', '実行後、変数は参照できない');
 
 	section
 		h1 引数の自由さがMAX
@@ -187,6 +243,75 @@ block contents
 		div.
 			関数にはすべての引数が<code>arguments</code>という暗黙のオブジェクトとして渡されます。
 			これを使えば引数が何個来ても対応できます。
+		div.
+			このしくみは別章で解説するapply, callで使います。
+
+
+	section
+		h1 実用的な、関数を引数として渡す例
+		div.
+			ここまでくれば関数を引数として渡すことが理解できたでしょうか。
+			ちょっと便利で実践的な例を紹介します。
+		div.
+			Javascriptでは、配列のソートにArrays.sortがビルトインで用意されています。
+			ただ、この関数のソート順は「文字列比較」なので、数値順に並べたいという希望がかないません。
+
+		script(title="標準ソート関数は文字列順",type="code/Javascript").
+			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+			arr.sort(); // -> [10, 20, 30, 45, 64, 7, 78, 9, 90, 93]
+
+		div 気に入らねぇ。
+		div.
+			そこで自前の比較用関数compareを作成してArrays.sortに渡します。
+			Arrays.sortは引数なしでも動作しますが、関数を渡すとその関数の比較結果を使用します。
+
+		script(title="ソート用関数をコールバックに渡す",type="code/Javascript").
+			var arr = [9, 7, 93, 20, 64, 90, 30, 45, 10, 78];
+			// aとbに数字が渡る前提で、差を返す。
+			var compare = function(a,b){
+				return a > b;
+			};
+
+			// 大小を数字として判断する関数を引数として渡すと期待通りの結果が得られる
+			arr.sort(compare); // -> [7, 9, 10, 20, 30, 45, 64, 78, 90, 93]
+
+		div.
+			sort関数に比較用の関数を渡すことで、無事数字順にソートすることができました。
+			compare関数の<code>a > b</code>の箇所を<code>a < b</code>にすることで降順にソートすることもできます。
+			この機能を使うと、オブジェクトのID順や名前順など、クライアントサイドでのソートの幅が拡がります。
+
+	section
+		h1 コールバックを渡す際の注意点
+		div.
+			コールバックとして渡す場合、関数に"()"をつけないことに注意してください。
+			"()"をつけると、関数が即実行されます。
+			非同期実行させるためにコールバックを渡しているつもりで、実行結果を渡しているオマヌケコードは実務でも散見されます。
+			「関数もオブジェクト」であることを理解していれば大丈夫です。
+
+		script(title="渡すときは関数オブジェクト",type="code/Javascript").
+			var a = function(a,b) {return a + b};
+
+			var b = function(f){
+				if(typeof f == 'function'){
+					return f(1,2);
+				}
+				throw new Error('関数よこせ！');
+			};
+
+			assert(b(a), '正しい');
+			assert(b(a()), 'あれ？');
+
+		div.
+			関数として欲しいところは、かならず関数かどうかのチェックをしましょう。
+			なにごともなかったようにやさしくスルーすることもできますが、サンプルコードのように例外をスローするのが良いでしょう。
+			コードの間違いに気づくのは早いほど良いです。
+	section
+		h1 最後に
+		div.
+			ちょっと長かったですが、関数の特徴は理解できたでしょうか？
+			とはいえこれで全部ではありません。
+		div まだまだ続きます。
+
 
 // ライター情報
 block writer

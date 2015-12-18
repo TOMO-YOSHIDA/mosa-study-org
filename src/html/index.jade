@@ -20,6 +20,10 @@ html
 
 			section
 				div 2015/11/26の勉強会が終わったので、次回に向けて気ままに更新中。
+				ul
+					li
+						+pagelink('関数 Function', 'javascript/function/function', 'update')
+						| を書き換え(2015.12.18)
 
 			section
 				h1 Javascriptの基礎知識
@@ -34,6 +38,7 @@ html
 							+index('falsyな値', 'javascript/falsy')
 							+index('変数のスコープ', 'javascript/scope')
 							li.disabled JSON
+							li.disabled 例外のスローとキャッチ
 
 					li ショートハンド(略記法)
 						ul
@@ -43,19 +48,19 @@ html
 							li.disabled !!とか~~とか!0とかvoid 0とか
 					li 関数
 						ul
-							+index('関数 Function', 'javascript/function/function')
+							+index('関数 Function', 'javascript/function/function', 'update')
 							+index('関数の実体化(new)', 'javascript/function/function-object')
 							+index('this', 'javascript/function/this')
 							+index('apply, callによるthis', 'javascript/function/apply-and-call')
-							+indexing('プロトタイプ prototype', 'javascript/function/prototype')
-							+indexing('クロージャ closure', 'javascript/function/closure')
-							+indexing('値渡しと参照渡し', 'javascript/function/reference-and-value')
+							+index('プロトタイプ prototype', 'javascript/function/prototype','making')
+							+index('クロージャ closure', 'javascript/function/closure', 'making')
+							+index('値渡しと参照渡し', 'javascript/function/reference-and-value', 'making')
 
 					li 中級編
 						ul
 							li.disabled Javascriptはシングルスレッドである
-							+indexing('Defferd, Promise', 'javascript/deferred')
-							+indexing('正規表現', 'javascript/regexp')
+							+index('Defferd, Promise', 'javascript/deferred', 'making')
+							+index('正規表現', 'javascript/regexp', 'making')
 							li.disabled ArrayとObject
 
 			// section
@@ -89,7 +94,7 @@ html
 							li.disabled String.replace
 					li パフォーマンス
 						ul
-							+deadlink('forとforEach', 'javascript/for-and-forEach')
+							+index('forとforEach', 'javascript/for-and-forEach', 'deadlink')
 							+index('script読み込みのパフォーマンス', 'performance/script-tag')
 							li.disabled undefinedとvoid 0
 					li 障害対策
