@@ -15,7 +15,75 @@ block contents
 	section
 		h1 apply, call呼び出しパターン
 		div Javascriptの良いところであり悪いところでもあるのが、thisを自由に指定することができることです。
-		div 関数のメソッドapplyやcallを使うことで自由に実行コンテキストを指定できます。
+
+		div.
+			関数はそれ自身に<code>apply</code>と<code>call</code>というメソッドを持っています。
+			このメソッドを使うと、実行時のthisにあたるオブジェクトを引数に渡すことができます。
+			この実行時の"this"にあたるオブジェクトを「実行コンテキスト」と呼びます。
+			実行コンテキストがnull,またはundefinedの場合はglobalオブジェクトを実行コンテキストとして実行します。
+
+	section
+		h1 ロード済み関数
+		div.
+			動作確認用に、下記の関数がこのページでロード済みです。
+
+		script(title="thisを調べる関数",type="code/Javascript").
+			function showThis(arg1, arg2) {
+				// thisが何者なのかを表示
+				var msg = "this is '" + (this === window ? 'Window' : this.name);
+				// 引数を表示する
+				msg += "': " + arg1 + ", " + arg2;
+				console.log(msg);
+			}
+
+			// 実行時コンテキストダミー
+			var dummy = {
+				name: 'DUMMY',
+			};
+		div.
+			実行時コンテキストである"this"をチェックし、グローバルオブジェクトかそれ以外かを表示します。
+
+		div.
+			showThis関数を関数として呼び出すと、前章で解説したとおりグローバルオブジェクトになります。
+		script(title="thisを調べる関数",type="code/Javascript").
+			showThis("引数1", "引数2");
+			// -> this is 'Window': 引数1, 引数2
+
+	section
+		h1 apply
+		div.
+			applyは、関数に実行コンテキストを与え、引数をまとめて渡すことができます。
+			引数そのままで関数をラップする場合などに使います。
+
+		script(title="applyの例",type="code/Javascript").
+			// 引数は配列にまとめて渡す
+			showThis.apply(dummy, ["引数1", "引数2"]);
+
+			// 実行コンテキストをdummyにして実行するラッパー関数
+			function wrapper(arg1, arg2) {
+				showThis.apply(dummy, arguments);
+			}
+
+			// ラップ関数を使い、引数をそのままつかう
+			wrapper("引数A", "引数B");
+
+			// コンテキストを渡さずに実行
+			showThis.apply(null, ["引数α", "引数β"]);
+
+		div.
+			ラッパー関数<code>wrapper</code>に渡された引数を、そのまま<code>showThis</code>関数に渡しています。
+		div.
+			applyに実行コンテキストとしてdummyを渡しています。このdummyがnull, またはundefinedの場合、実行コンテキストはグローバルオブジェクトになります。
+
+	// ここから要改定1/5
+	section
+		h1 call
+		ul
+			li 通常の関数のように、引数を列挙する
+			li 呼び出し方法は function.apply(thisObj, arg1, arg2, arg3...)
+
+
+
 		script(title="call, apply",type="code/Javascript").
 
 			var _this = {value:"this is another object!"};
@@ -106,6 +174,20 @@ block contents
 			bindedFunc1の方は、本来なら関数呼び出しなのでthisはwindowを指すはずです。
 			先にコンテキストを固定したのでthisがちゃんとcontextオブジェクトを見るようになっています。
 		div 理解してしまえば簡単ですね。
+
+	script.
+			function showThis(arg1, arg2) {
+				// thisが何者なのかを表示
+				var msg = "this is '" + (this.name || this.constructor && this.constructor.name);
+				// 引数を表示する
+				msg += "': " + arg1 + ", " + arg2;
+				console.log(msg);
+			}
+
+			// 実行時コンテキストと
+			var dummy = {
+				name: 'DUMMY',
+			};
 
 // ライター情報
 block writer

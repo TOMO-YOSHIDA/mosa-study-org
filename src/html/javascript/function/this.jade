@@ -14,22 +14,22 @@ block contents
 			Javascriptをやっていて、まずつまずくのがthis。
 			thisは実行コンテキストを指し、呼び出しパターンによってthisが何を指すのかが変わります。
 
+		div.
+			関数呼び出しのパターンは４つあり、それぞれで動作が異なります。
+
 	section
 		h1 メソッド呼び出しパターン
 		div.
-			オブジェクトのメソッドとして呼び出すパターン。予想通り、thisはオブジェクトになります。
+			オブジェクトを作成し、そのメソッドとして呼び出すパターン。予想通り、thisはオブジェクトになります。
 
 		script(title="メソッド呼び出しパターン",type="code/Javascript").
-			var a = {
-				name: 'object a',
-				value: "obuject a",
+			var obj = {
+				name: 'sample object',
 				method: function(){
-					if(this.name === 'object a') {
-						console.log('this is %s', this.value);
-					}
+					assert(this.name === 'sample object', 'thisはobjを指す');
 				}
 			}
-			a.method(); // -> this is obuject a
+			obj.method();
 
 	section
 		h1 関数呼び出しパターン
@@ -37,12 +37,10 @@ block contents
 			関数を定義し、関数として呼び出すパターンです。
 
 		script(title="関数呼び出しパターン",type="code/Javascript").
-			function A() {
-				if(this === window) {
-					console.log('this is window.');
-				}
+			function MyFunction() {
+				assert(this === window, 'thisはグローバルオブジェクトのwindow');
 			}
-			A(); // -> this is window.
+			MyFunction();
 
 		div.
 			'this'がwindow、つまりグローバルオブジェクトを指していることがわかりました。
@@ -52,71 +50,69 @@ block contents
 		h1 コンストラクタ呼び出しパターン
 		div 関数をインタンス化するためにnew付きで実行された場合、thisは関数自身になります。
 		script(title="コンストラクタ呼び出し",type="code/Javascript").
-			function A(value){
+			function MyFunction(value){
 				this.value = value;
 				this.get = function(){
 					return this.value;
 				};
 			}
 
-			var a = new A('this is A');
-			console.log(a.get()); // -> "this is A"
-
-			// 関数としてnewをつけずに呼び出すと？
-			a = A(); // undefined
-			console.log(a.get()); // Uncaught TypeError: Cannot read property 'get' of undefined(…)
-
-			// thisがグローバルオブジェクトのため、えらいことに
-			console.log(window.get()); // -> "this is A"
+			var f = new MyFunction('this is MyFunction');
+			console.log(f.get()); // -> "this is MyFunction"
 
 		div.
 			newを付けて呼び出す場合、thisは意図どおり関数本体を参照します。問題ありません。
-		div.
-			しかしnewをつけずにただの関数として呼び出すと、thisはグローバルオブジェクトです。
-			関数呼び出しパターンで解説したとおりです。
-			関数が宣言されているのはグローバルであり、グローバルオブジェクトのメソッドとして実行されるのです。
 
 		div.
-			オブジェクト内にコンストラクタ関数を保持することで、newを付け忘れてもグローバル汚染することはなくなります。
+			しかしnewをつけずにただの関数として呼び出すと、関数呼び出しパターンで解説したとおりthisはグローバルオブジェクトになります。
 
 		script(title="newをつけずに呼び出すと？",type="code/Javascript").
-			var sample = {
-				name: 'sample',
-				A: function A() {
-					console.log('this name is %s', this.name);
-					console.log('constructor is %s', this.constructor.name);
-					// 関数は戻り値を返さない(undefined)
-				}
-			};
+			function MyFunction(value){
+				this.value = value;
+				this.get = function(){
+					return this.value;
+				};
+			}
 
-			// sample.Aをコンストラクタとして呼び出すとnameが存在しない
-			var a = new sample.A();
-			// -> this name is undefined
-			// -> constructor is A
+			f = MyFunction('関数呼び出し');
 
-			// newをつけないパターンはメソッド呼び出しなのでsampleが参照される
-			sample.A();
-			// -> this name is sample
-			// -> constructor is Object
+			// fはどこにいった？
+			assert(typeof f === 'undefined', 'fはundefined');
+
+			// MyFunctionを関数として呼び出すとthisはグローバルオブジェクトになる。
+			assert(get() == '関数呼び出し', 'getがグローバルアクセスできる');
+			assert(value == '関数呼び出し', 'valueもグローバル宣言されてしまった');
 
 		div.
-			this.constructorを調べることでメソッド呼び出しなのかコンストラクタ呼び出しなのかをチェックすることができます。
-			newなしで呼び出した時にErrorをthrowする対応もできます。
+			コンストラクタとして用意した関数内でthis.constructorを調べることで、メソッド呼び出しなのかコンストラクタ呼び出しなのかをチェックすることができます。
 
 		script(title="newをつけない場合にError",type="code/Javascript").
-			function A() {
-				if(this.constructor.name !== 'A')
+			function MyFunction() {
+				if(this.constructor.name !== 'MyFunction')
 					throw new Error('new なし！');
 			}
 
-			var a = new A(); // -> 問題なし
-			var b = A(); // -> Uncaught Error: new なし！
+			var f1 = new MyFunction(); // -> 問題なし
+			var f2 = MyFunction(); // -> Uncaught Error: new なし！
+
+		div.
+			コンストラクタとして呼び出されなかった場合にErrorをthrowすることで、使い方が間違っていることを開発中に検知できます。
+		div.
+			関数がコンストラクタとして呼び出される前提か、関数呼び出しなのか？は関数のネーミングルールで判定します。
+		ul
+			li 大文字始まりならコンストラクタ
+			li 小文字始まりなら関数、またはメソッド
+		div.
+			とするのが一般的なようです。
+			(ただし公式ルールではないので、小文字始まりのコンストラクタや大文字始まりのメソッドも作成可能です。)
+
 
 	section
 		h1 apply,call呼び出しパターン
 		div
+			| 最後は特殊な呼び出しパターンです。この
 			+pagelink('apply, call', 'apply-and-call')
-			| の呼び出しパターンについては別章にわけます。
+			| の呼び出しパターンについては次章で解説します。
 
 // ライター情報
 block writer
