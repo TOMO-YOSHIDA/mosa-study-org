@@ -7,11 +7,12 @@ var gulp = require('gulp')
 	, jade = require('gulp-jade')
 	, filter = require('gulp-filter')
 	, less = require('gulp-less')
-	, minifyCss = require('gulp-minify-css')
+	, minifyCss = require('gulp-cssnano')
 	, autoprefixer = require('gulp-autoprefixer')
 	, uglify = require('gulp-uglify')
 	, concat = require('gulp-concat')
 	, styledocco = require('gulp-styledocco')
+	, webserver = require('gulp-webserver')
 	;
 
 
@@ -59,7 +60,7 @@ gulp.task('bower', function () {
 	var jslib = marge(bowers('js', 'min.js'));
 	jslib.push('src/scripts/**/*.js') // bowerだけど自作JSも含める
 	gulp.src(jslib)
-	.pipe(uglify()) // ハングする
+		.pipe(uglify()) // ハングする
 		.pipe(concat('lib.min.js'))
 		.pipe(gulp.dest('public/mosa-study/'));
 });
@@ -125,11 +126,20 @@ gulp.task('plane-js', function () {
 
 //ファイルの更新を監視する
 gulp.task('watch', function () {
+
 	gulp.watch(lessPath, ['less']);
 	gulp.watch(jadePath, ['jade']);
 	gulp.watch(lessSubPath, ['sub-less']);
 	gulp.watch('src/scripts/*.js', ['plane-js']);
 
+});
+
+gulp.task('webserver', function () {
+	gulp.src('public')
+		.pipe(webserver({
+			livereload: true,
+			open: true
+		}));
 });
 
 gulp.task('build', function () {
