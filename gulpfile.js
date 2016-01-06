@@ -80,6 +80,7 @@ gulp.task('less-compile', function () {
 });
 // styledocco
 gulp.task('styledocco', function () {
+	return;//無効
 	gulp.src('public/mosa-study/temp/**/*.css')
 		.pipe(plum())
 		.pipe(styledocco({
