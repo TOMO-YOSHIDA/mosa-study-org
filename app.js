@@ -7,7 +7,7 @@ var express = require('express')
 app.use(compress());
 app.use(express.static(path.join(__dirname, './public')));
 
-var httpPort = process.env.HTTP_PORT || 8081;
+var httpPort = process.env.HTTP_PORT || 10080;
 http.createServer(app).listen(httpPort, function(){
 	console.log('Express server (HTTP) listening on port ' + httpPort);
 });
