@@ -11,9 +11,81 @@ block contents
 	section
 		div.
 			prototypeは、関数の「設計図」です。
+			prototypeとして宣言したメソッドやプロパティは、全ての関数インスタンスから参照されます。
 		div.
-			Javaではクラスを基本としてモジュールを作成していきますが、Javascriptにはクラスがありません。
-			代わりに関数(function)をクラスのように扱います。
+			またビルトイン関数のporototypeを拡張することができるので、もともとあるStringやNumberに便利なメソッドを追加することも可能です。
+		div.
+			さらにはJavaクラスのように、prototypeも継承することができるのでJavascriptの可能性を拡げてくれます。
+			ちょっとむずかしいですが、これを覚えればなかなかのJS使いになれます。
+		div.
+			プロトタイプには以下の特徴があります。
+		ul
+			li 共通のメソッドを定義できる
+			li クラスのように継承できる
+
+	section
+		h1 プロトタイプを拡張してみる
+		div.
+			早速ですが、ビルトイン関数のStringに対してprototype拡張をしてみます。
+		div.
+			Javascriptには<code>String.trim()</code>という、文字列の前後の空白を取り除いてくれる便利メソッドがあります。
+			でも要件によって全角スペースもとって欲しいなぁとか、右側(文末)の空白だけとって欲しいなぁとかがよくあります。
+
+		div.
+			その場合、よく思いつくのが<code>StringUtil</code>の様なユーティリティクラスを作成することです。
+
+		script(title="よくあるStringUtil",type="code/Javascript").
+			// 半角スペースは\u0020、全角スペースは\u3000
+			var StringUtil = {
+				// 両端の全角スペースも削除する関数
+				strim : function(str) {
+					return str && str.replace(/^[\u0020\u3000]+|[\u0020\u3000]+$/g,"")
+				},
+
+				// 右側のスペースを削除する関数
+				rtrim : function(str){
+					return str && str.replace(/[\u0020\u3000]+$/g,"")
+				}
+			}
+
+			var str = " 　 左右の端が半/全角スペース混じり 　 ";
+
+			console.log('"%s"', StringUtil.strim(str)); // -> "左右の端が半/全角スペース混じり"
+			console.log('"%s"', StringUtil.rtrim(str)); // -> " 　 左右の端が半/全角スペース混じり"
+
+		div とりあえず、シンプルです。他にも機能を足していきたい場合はStringUtilをメンテしていきます。
+
+		div では、いよいよprototypeによるビルトイン関数の機能拡張です。
+		script(title="String.prototypeの拡張",type="code/Javascript").
+			// 両端の全角スペースも削除する関数
+			String.prototype.strim = function() {
+				return this.replace(/^[\u0020\u3000]+|[\u0020\u3000]+$/g,"")
+			};
+
+			// 右側のスペースを削除する関数
+			String.prototype.rtrim = function(){
+				return this.replace(/[\u0020\u3000]+$/g,"")
+			};
+
+			var str = " 　 左右の端が半/全角スペース混じり 　 ";
+
+			console.log('"%s"', str.strim(str)); // -> "左右の端が半/全角スペース混じり"
+			console.log('"%s"', str.rtrim(str)); // -> " 　 左右の端が半/全角スペース混じり"
+
+			console.log('"%s"'," 　直接呼び出し! 　".strim()); // -> "直接呼び出し!"
+
+		div.
+			どうでしょう。
+			書き方は大して変わりませんが、<code>String.strim</code>と<code>String.rtrim</code>というメソッドが増えました。
+		div.
+			一度prototypeを拡張すると、同じ関数のインスタンスは全てそれを参照できます。
+			インスタンスごとに作成されるわけではないのでメモリにも優しいエコロジカルなやつです。
+		div.
+			prototypeの場合、メソッドとして呼び出されるので実行コンテキストのthisは常にそのオブジェクト自身です。
+			ですが、変数がString型である想定なのにNumber型やnullなど、String型以外だった場合はエラーになります。
+			テストで型違いに気づくことができますが、nullやundefinedの場合の動作を記述できるStringUtilの方が使いやすいかもしれないですね。
+
+
 
 	section
 		h1 prototype

@@ -7,7 +7,7 @@ var gulp = require('gulp')
 	, jade = require('gulp-jade')
 	, filter = require('gulp-filter')
 	, less = require('gulp-less')
-	, minifyCss = require('gulp-cssnano')
+	, cssnano = require('gulp-cssnano')
 	, autoprefixer = require('gulp-autoprefixer')
 	, uglify = require('gulp-uglify')
 	, concat = require('gulp-concat')
@@ -68,7 +68,7 @@ gulp.task('bower', function () {
 
 //lessをコンパイルする
 gulp.task('less', function () {
-	runSequence('less-compile', 'styledocco', 'css-minify');
+	runSequence('less-compile', 'styledocco', 'cssnano');
 });
 
 // 生cssの出力
@@ -91,11 +91,11 @@ gulp.task('styledocco', function () {
 		}))
 });
 // css minify
-gulp.task('css-minify', function () {
+gulp.task('cssnano', function () {
 	gulp.src('public/mosa-study/temp/**/*.css')
 		.pipe(concat(application_name + '.css'))
 		.pipe(autoprefixer())
-		.pipe(minifyCss())
+		.pipe(cssnano())
 		.pipe(gulp.dest('public/mosa-study/'));
 });
 
@@ -105,7 +105,7 @@ gulp.task('sub-less', function () {
 		.pipe(plum())
 		.pipe(less())
 		.pipe(autoprefixer())
-		.pipe(minifyCss())
+		.pipe(cssnano())
 		.pipe(gulp.dest('public/mosa-study/subcss'));
 });
 
@@ -138,6 +138,7 @@ gulp.task('watch', function () {
 gulp.task('webserver', function () {
 	gulp.src('public')
 		.pipe(webserver({
+			// directoryListing: true,
 			livereload: true,
 			open: true
 		}));
@@ -145,6 +146,8 @@ gulp.task('webserver', function () {
 
 gulp.task('build', function () {
 	runSequence('clean', 'bower', 'less', 'sub-less', 'jade', 'plane-js');
+
+	gulp.src('src/html/index.html').pipe(gulp.dest('public/'));
 });
 
 // build & watch
